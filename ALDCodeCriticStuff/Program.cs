@@ -3,4 +3,6 @@
 using ALDCodeCriticStuff.Solutions;
 
 //HelloWorld.Eval();
-PalindromeNumber.GetResult();
+//PalindromeNumber.GetResult();
+//HratkySLifo.Evaluate();
+HratkySFifo.Evaluate();
