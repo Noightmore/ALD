@@ -5,4 +5,6 @@ using ALDCodeCriticStuff.Solutions;
 //HelloWorld.Eval();
 //PalindromeNumber.GetResult();
 //HratkySLifo.Evaluate();
-HratkySFifo.Evaluate();
+//HratkySFifo.Evaluate();
+
+UniqueNumbers.Evaluate();

@@ -1,6 +1,6 @@
 namespace ALDCodeCriticStuff.Solutions.LIFOFIFO;
 
-public class Item<T>
+internal class Item<T>
 {
     private readonly T _data;
     private Item<T>? _next;
