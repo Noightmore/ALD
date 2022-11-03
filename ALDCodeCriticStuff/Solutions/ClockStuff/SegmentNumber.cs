@@ -6,6 +6,7 @@ public static class SegmentNumber
 {
     private static readonly Hashtable Segments = new()
     {
+        #region Zero Segment
         {
             HashSegments(
                 new Type1(9, 30, 30),
@@ -15,6 +16,8 @@ public static class SegmentNumber
             
             (byte) 0
         },
+        #endregion
+        
         {
             new Type1(6, 0, 30).GetHashCode()^
             new Type2(12, 0,0).GetHashCode()^
