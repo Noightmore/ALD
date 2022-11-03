@@ -7,4 +7,6 @@ using ALDCodeCriticStuff.Solutions;
 //HratkySLifo.Evaluate();
 //HratkySFifo.Evaluate();
 
-UniqueNumbers.Evaluate();
+//UniqueNumbers.Evaluate();
+
+ClockTo7SegmentNumber.Evaluate();

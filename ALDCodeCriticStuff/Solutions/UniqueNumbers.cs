@@ -26,7 +26,7 @@ public static class UniqueNumbers
         PrintOutput(uniqueValues);
     }
 
-    private static void PrintOutput<T, TY>(Dictionary<T, TY> uniqueParamsOccurenceContainer) where T : notnull
+    private static void PrintOutput<T>(Dictionary<T, Occurence> uniqueParamsOccurenceContainer) where T : notnull
     {
         const string all = "All: ";
         const string moreThanOnce = ">1x: ";
