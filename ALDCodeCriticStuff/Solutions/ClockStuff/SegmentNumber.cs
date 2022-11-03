@@ -18,47 +18,70 @@ public static class SegmentNumber
         },
         #endregion
         
+        #region One Segment
         {
-            new Type1(6, 0, 30).GetHashCode()^
-            new Type2(12, 0,0).GetHashCode()^
-            1,
+            HashSegments(
+                new Type1(6, 0, 30),
+                new Type2(12, 0,0),
+                null
+                ),
             
             (byte) 1
         },
+        #endregion
+        
+        #region Two Segment
         {
-            new Type1(9, 30, 30).GetHashCode()^
-            new Type2(9, 45,45).GetHashCode()^
-            new Type3(3, 30,15).GetHashCode(),
+            HashSegments(
+                new Type1(9, 30, 30),
+                new Type2(9, 45,45),
+                new Type3(3, 30,15)
+                ),
             
-            2
+            (byte) 2
         },
-        // {
-        //     new Type1(9, 30, 30).GetHashCode()^
-        //     new Type2(9, 45,0).GetHashCode()^
-        //     new Type3(3, 15,15).GetHashCode(),
-        //     
-        //     3
-        // },
-        // {
-        //     new Type1(6, 30, 30).GetHashCode()^ 
-        //     new Type2(0, 0,0).GetHashCode()^
-        //     new Type3(0, 15,15).GetHashCode(),
-        //     
-        //     4
-        // },
-        // {
-        //     new Type1(9, 45, 30).GetHashCode()^
-        //     new Type2(0, 0,45).GetHashCode()^
-        //     new Type3(3, 15,0).GetHashCode(),
-        //     
-        //     5
-        // }
-        //
+        #endregion
+        
+        #region Three Segment
+        {
+            HashSegments(
+                new Type1(9, 30, 30),
+                new Type2(9, 45,0),
+                new Type3(3, 15,15)
+                ),
+            
+            (byte) 3
+        },
+        #endregion
+        
+        #region Four Segment
+        {
+            HashSegments(
+                new Type1(6, 30, 30),
+                new Type2(0, 0,0),
+                new Type3(0, 15,15)
+                ), 
+            
+            (byte) 4
+        },
+        #endregion
+        
+        #region Five Segment
+        {
+            HashSegments(
+                new Type1(9, 45, 30),
+                new Type2(0, 0,45),
+                new Type3(3, 15,0)
+                ),
+            
+            (byte) 5
+        },
+        #endregion
     };
 
     public static byte GetSegmentNumber(AnalogClock? t1, AnalogClock? t2, AnalogClock? t3)
     {
-        var hash = t1?.GetHashCode() ?? 1 ^ t2?.GetHashCode() ?? 1 ^ t3?.GetHashCode() ?? 1;
+        var hash = HashSegments(t1, t2, t3);
         foreach(DictionaryEntry ele1 in Segments)
         {
             Console.WriteLine("{0} and {1} ", ele1.Key, ele1.Value);
@@ -69,7 +92,9 @@ public static class SegmentNumber
         //return 0;
     }
 
-    public static int HashSegments(AnalogClock? t1, AnalogClock? t2, AnalogClock? t3)
+    // TODO: implement better hashing method
+    // https://learn.microsoft.com/en-us/troubleshoot/developer/visualstudio/csharp/language-compilers/compute-hash-values
+    private static int HashSegments(AnalogClock? t1, AnalogClock? t2, AnalogClock? t3)
     {
         var result = t1?.GetHashCode() ?? 0;
         result = (result*397) ^ t2?.GetHashCode() ?? 0;

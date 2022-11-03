@@ -31,6 +31,7 @@ public class Type3 : AnalogClock
         }
     }
     
+    // TODO: implement better hashing method
     public override int GetHashCode()
     {
         unchecked
