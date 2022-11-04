@@ -42,7 +42,7 @@ public static class ClockTo7SegmentNumber
                     {
                         if (line.Last().Equals("broken"))
                         {
-                            t1 = null;
+                            t2 = null;
                             break;
                         }
 
