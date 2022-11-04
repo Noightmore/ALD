@@ -82,14 +82,18 @@ public static class SegmentNumber
     public static byte GetSegmentNumber(AnalogClock? t1, AnalogClock? t2, AnalogClock? t3)
     {
         var hash = HashSegments(t1, t2, t3);
+        
+        // for debug
         foreach(DictionaryEntry ele1 in Segments)
         {
             Console.WriteLine("{0} and {1} ", ele1.Key, ele1.Value);
         }
 
-        Console.WriteLine(hash);
-        return (byte) Segments[hash]!;
-        //return 0;
+        var segment = GetSegmentAndCheckValidity(hash);
+        if (segment is not 255) return segment;
+        Console.WriteLine("Invalid segment");
+        return 255;
+
     }
 
     // TODO: implement better hashing method
@@ -98,7 +102,22 @@ public static class SegmentNumber
     {
         var result = t1?.GetHashCode() ?? 0;
         result = (result*397) ^ t2?.GetHashCode() ?? 0;
-        result = (result * 397) ^ t3?.GetHashCode() ?? 0;
+        result = (result*397) ^ t3?.GetHashCode() ?? 0;
         return result;
+    }
+
+    private static byte GetSegmentAndCheckValidity(int hash)
+    {
+        byte seg;
+        try
+        {
+            seg =  (byte) Segments[hash]!;
+        }
+        catch (NullReferenceException ex)
+        {
+            return 255; // a return code for invalid segment
+        }
+        
+        return seg;
     }
 }

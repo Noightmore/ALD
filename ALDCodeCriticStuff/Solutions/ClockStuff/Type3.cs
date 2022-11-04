@@ -21,11 +21,11 @@ public class Type3 : AnalogClock
         {
             FSegment = PoweredState.On;
         }
-        if (Hour is 3 || Minute is 15 || Second is 15)
+        if (Hour is 3 or 15|| Minute is 15 || Second is 15)
         {
             GSegment = PoweredState.On;
         }
-        if (Hour is 6 || Minute is 30 || Second is 30)
+        if (Hour is 6 or 18 || Minute is 30 || Second is 30)
         {
             ESegment = PoweredState.On;
         }

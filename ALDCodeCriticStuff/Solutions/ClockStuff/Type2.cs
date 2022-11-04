@@ -15,11 +15,11 @@ public class Type2 : AnalogClock
     
     internal sealed override void ComputeSegments()
     {
-        if (Hour is 12 or 0 || Minute is 0 or 60 || Second is 0 or 60)
+        if (Hour is 24 or 12 or 0 || Minute is 0 or 60 || Second is 0 or 60)
         {
             CSegment = PoweredState.On;
         }
-        if (Hour is 9 || Minute is 45 || Second is 45)
+        if (Hour is 9 or 21|| Minute is 45 || Second is 45)
         {
             DSegment = PoweredState.On;
         }
