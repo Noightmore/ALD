@@ -9,7 +9,8 @@ public static class UniqueNumbers
         {
             var line = Console.ReadLine()?.Split(",");
             if (line is null) break;
-            if (line.FirstOrDefault() is "" or null) break;
+            
+            if (string.IsNullOrEmpty(line.FirstOrDefault())) break;
 
             foreach (var number in line.Select(int.Parse).ToArray())
                 if (uniqueValues.ContainsKey(number))
