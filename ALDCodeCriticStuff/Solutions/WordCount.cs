@@ -1,3 +1,5 @@
+using System.Text;
+
 namespace ALDCodeCriticStuff.Solutions;
 
 public static class WordCount
@@ -7,43 +9,68 @@ public static class WordCount
         var words = new Dictionary<string, ulong>();
         var phrases = new Dictionary<string, ulong>();
 
+        var text = new StringBuilder();
+        
         var line = Console.ReadLine();
-        while (line is not null)
+        while (line is not "---")
         {
-            var wordsInLine = line.Split(new[] { ' ', '\t', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            if (line is null) break;
+            
+            var wordsInLine = 
+                line.Split(new[] { ' ', '\t', '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            
             foreach (var word in wordsInLine)
             {
-                if (words.ContainsKey(word))
+                var loweredWord = word.ToLower();
+                if (words.ContainsKey(loweredWord))
                 {
-                    words[word]++;
+                    words[loweredWord]++;
                 }
                 else
                 {
-                    words.Add(word, 1);
+                    words.Add(loweredWord, 1);
                 }
             }
 
-            for (var i = 0; i < wordsInLine.Length - 1; i++)
-            {
-                var phrase = wordsInLine[i] + " " + wordsInLine[i + 1];
-                if (phrases.ContainsKey(phrase))
-                {
-                    phrases[phrase]++;
-                }
-                else
-                {
-                    phrases.Add(phrase, 1);
-                }
-            }
-
+            text.Append(line.TrimEnd().TrimStart());
+            if(line is not "") text.Append(' ');
+            
             line = Console.ReadLine();
         }
-
-        var sortedWords = words.OrderByDescending(x => x.Value);
+       
+        var textArray = text.ToString().Split(' ', StringSplitOptions.RemoveEmptyEntries);
         
+        for (var i = 0; i < textArray.Length - 1; i++)
+        {
+            var phrase = textArray[i] + " " + textArray[i + 1];
+            var loweredPhrase = phrase.ToLower();
+            if (phrases.ContainsKey(loweredPhrase))
+            {
+                phrases[loweredPhrase]++;
+            }
+            else
+            {
+                phrases.Add(loweredPhrase, 1);
+            }
+        }
+        
+        var sortedWords = 
+            words.OrderByDescending(x => x.Value).Take(15);
+        var sortedPhrases = 
+            phrases.OrderByDescending(x => x.Value).Take(15);
+        
+        Console.WriteLine("Word Frequency:");
         foreach (var word in sortedWords)
         {
-            Console.WriteLine($"{word.Key} - {word.Value}");
+            var percentage = Math.Round(word.Value / (double) words.Count * 100, 2);
+            Console.WriteLine($" - {word.Key,-12} {percentage}% ({word.Value})");
+        }
+        
+        Console.WriteLine("Phrase Frequency:");
+        foreach (var phrase in sortedPhrases)
+        {
+            var percentage = Math.Round(phrase.Value / (double) phrases.Count * 100, 2);
+            Console.WriteLine($" - {phrase.Key,-20} {percentage}% ({phrase.Value})");
         }
     }
 }

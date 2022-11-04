@@ -8,5 +8,5 @@ using ALDCodeCriticStuff.Solutions;
 //HratkySFifo.Evaluate();
 
 //UniqueNumbers.Evaluate();
-
-ClockTo7SegmentNumber.Evaluate();
+WordCount.Evaluate();
+//ClockTo7SegmentNumber.Evaluate();
