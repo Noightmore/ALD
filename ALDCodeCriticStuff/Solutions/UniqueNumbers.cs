@@ -12,17 +12,12 @@ public static class UniqueNumbers
             if (line.FirstOrDefault() is "" or null) break;
 
             foreach (var number in line.Select(int.Parse).ToArray())
-            {
                 if (uniqueValues.ContainsKey(number))
-                {
                     uniqueValues[number] = Occurence.MoreThanOnce;
-                }
                 else
-                {
                     uniqueValues.Add(number, Occurence.Once);
-                }
-            }
         }
+
         PrintOutput(uniqueValues);
     }
 
@@ -35,12 +30,12 @@ public static class UniqueNumbers
         var allLine = all;
         var moreThanOnceLine = moreThanOnce;
         var exactlyOnceLine = exactlyOnce;
-        
+
 
         foreach (var param in uniqueParamsOccurenceContainer)
         {
             var item = param.Key + ",";
-            
+
             allLine += item;
             if (param.Value!.Equals(Occurence.MoreThanOnce))
             {

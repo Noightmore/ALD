@@ -7,7 +7,7 @@ public static class ClockTo7SegmentNumber
     public static void Evaluate()
     {
         var number = "";
-        
+
         while (true)
         {
             AnalogClock? t1 = null, t2 = null, t3 = null;
@@ -16,9 +16,9 @@ public static class ClockTo7SegmentNumber
             {
                 var line = Console.ReadLine()?.Split(" ");
                 if (line is null) break;
-                
-                
-                // TODO: refactor this
+
+
+                // TODO: refactor this (optional)
                 switch (i)
                 {
                     case 1:
@@ -32,10 +32,10 @@ public static class ClockTo7SegmentNumber
                         var data = line.Last().Split(":");
                         t1 = AnalogClock.Generate(
                             byte.Parse(data[0]),
-                            byte.Parse(data[1]), 
-                            byte.Parse(data[2]), 
+                            byte.Parse(data[1]),
+                            byte.Parse(data[2]),
                             i
-                            );
+                        );
                         break;
                     }
                     case 2:
@@ -74,10 +74,10 @@ public static class ClockTo7SegmentNumber
                     }
                 }
             }
-            
+
             number += SegmentNumber.GetSegmentNumber(t1, t2, t3);
             var endOrNot = Console.ReadLine();
-            
+
             if (endOrNot is null) break;
             if (!endOrNot.Equals("-")) break;
         }

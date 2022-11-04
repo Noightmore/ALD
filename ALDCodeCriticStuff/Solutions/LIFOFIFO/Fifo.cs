@@ -7,31 +7,32 @@ public class Fifo<T>
 
     public Fifo()
     {
-        this._front = this._rear = null;
+        _front = _rear = null;
     }
 
     public void Enqueue(T data)
     {
         var newItem = new Item<T>(data);
-        
-        if (this._rear is not null)
+
+        if (_rear is not null)
         {
-            this._rear.SetNext(newItem);
-            this._rear = newItem;
+            _rear.SetNext(newItem);
+            _rear = newItem;
             return;
         }
-        this._front = this._rear = newItem;
+
+        _front = _rear = newItem;
     }
 
     public T? Dequeue()
     {
-        if(this._front is null) return default;
-        
-        var returnValue = this._front;
-        this._front = this._front.GetNext();
-        
-        if(this._front is null) this._rear = null;
-        
+        if (_front is null) return default;
+
+        var returnValue = _front;
+        _front = _front.GetNext();
+
+        if (_front is null) _rear = null;
+
         return returnValue.GetData();
     }
 }

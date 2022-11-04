@@ -12,15 +12,15 @@ public class Lifo<T>
     public void Push(T data)
     {
         var newItem = new Item<T>(data);
-        newItem.SetNext(this._top);
-        this._top = newItem;
+        newItem.SetNext(_top);
+        _top = newItem;
     }
 
     public T? Pop()
     {
-        if (this._top is null) return default;
-        var poppedItem = this._top;
-        this._top = this._top.GetNext();
+        if (_top is null) return default;
+        var poppedItem = _top;
+        _top = _top.GetNext();
         return poppedItem.GetData();
     }
 }
