@@ -30,29 +30,29 @@ public static class SegmentNumber
         },
         #endregion
         
-        #region Two Segment
-        {
-            HashSegments(
-                new Type1(9, 30, 30),
-                new Type2(9, 45,45),
-                new Type3(3, 30,15)
-                ),
-            
-            (byte) 2
-        },
+         #region Two Segment
+         {
+             HashSegments(
+                 new Type1(6, 45, 30),
+                 new Type2(9, 45, 45),
+                 new Type3(3, 30, 15)
+                 ),
+             
+             (byte) 2
+         },
         #endregion
         
-        #region Three Segment
-        {
-            HashSegments(
-                new Type1(9, 30, 30),
-                new Type2(9, 45,0),
-                new Type3(3, 15,15)
-                ),
-            
-            (byte) 3
-        },
-        #endregion
+         #region Three Segment
+         {
+             HashSegments(
+                 new Type1(9, 30, 30),
+                 new Type2(9, 45,0),
+                 new Type3(3, 15,15)
+                 ),
+             
+             (byte) 3
+         },
+         #endregion
         
         #region Four Segment
         {
@@ -89,29 +89,26 @@ public static class SegmentNumber
             Console.WriteLine("{0} and {1} ", ele1.Key, ele1.Value);
         }
 
-        var segment = GetSegmentAndCheckValidity(hash);
+        var segment = GetSegmentValueAndCheckValidity(hash);
+        Console.WriteLine(hash);
         if (segment is not 255) return segment;
         Console.WriteLine("Invalid segment");
         return 255;
 
     }
-
-    // TODO: implement better hashing method
-    // https://learn.microsoft.com/en-us/troubleshoot/developer/visualstudio/csharp/language-compilers/compute-hash-values
-    private static int HashSegments(AnalogClock? t1, AnalogClock? t2, AnalogClock? t3)
+    
+    private static string HashSegments(AnalogClock? t1, AnalogClock? t2, AnalogClock? t3)
     {
-        var result = t1?.GetHashCode() ?? 0;
-        result = (result*397) ^ t2?.GetHashCode() ?? 0;
-        result = (result*397) ^ t3?.GetHashCode() ?? 0;
-        return result;
+        var hash = new System.Security.Cryptography.SHA256CryptoServiceProvider().ComputeHash(AnalogClock.GetSegmentRawData(t1, t2, t3));
+        return AnalogClock.ByteArrayToString(hash);
     }
 
-    private static byte GetSegmentAndCheckValidity(int hash)
+    private static byte GetSegmentValueAndCheckValidity(string hash)
     {
         byte seg;
         try
         {
-            seg =  (byte) Segments[hash]!;
+            seg = (byte) Segments[hash]!;
         }
         catch (NullReferenceException ex)
         {

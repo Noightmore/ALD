@@ -74,8 +74,7 @@ public static class ClockTo7SegmentNumber
                     }
                 }
             }
-
-
+            
             number += SegmentNumber.GetSegmentNumber(t1, t2, t3);
             var endOrNot = Console.ReadLine();
             

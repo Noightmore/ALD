@@ -1,17 +1,20 @@
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
+
 namespace ALDCodeCriticStuff.Solutions.ClockStuff;
 
-public class AnalogClock
+public abstract class AnalogClock
 {
     // unsigned byte 0-255
-    protected byte Hour { get; set; }
-    protected byte Minute { get; set; }
-    protected byte Second { get; set; }
+    protected byte Hour { get; }
+    protected byte Minute { get; }
+    protected byte Second { get; }
 
     protected AnalogClock(byte hour, byte minute, byte second)
     {
-        // Hour = hour;
-        // Minute = minute;
-        // Second = second;
+        Hour = hour;
+        Minute = minute;
+        Second = second;
     }
 
     public static AnalogClock? Generate(byte hour, byte minute, byte second, byte clockType)
@@ -26,8 +29,43 @@ public class AnalogClock
     }
     
     // method that computes segments based on the time
-    internal virtual void ComputeSegments()
+    protected internal abstract void ComputeSegments();
+
+    protected abstract byte[] GetSegmentRawData();
+
+    public static byte[] GetSegmentRawData(AnalogClock? t1, AnalogClock? t2, AnalogClock? t3)
     {
-        return;
+        var defaultValue = new byte[] {0};
+
+        return (t1?.GetSegmentRawData() ?? defaultValue)
+            .Concat(t2?.GetSegmentRawData() ?? defaultValue).ToArray()
+            .Concat(t3?.GetSegmentRawData() ?? defaultValue).ToArray();
     }
+    
+    // Binary formatter should not be used in production
+    // https://learn.microsoft.com/en-us/dotnet/standard/serialization/binaryformatter-security-guide
+    // Making it internal use only could make it more secure
+    
+    // ReSharper disable once ReturnTypeCanBeEnumerable.Global
+    internal static byte[] ObjectToByteArray(object obj)
+    {
+        var bf = new BinaryFormatter();
+        var ms = new MemoryStream();
+        #pragma warning disable SYSLIB0011
+        bf.Serialize(ms, obj);
+        #pragma warning restore SYSLIB0011
+        return ms.ToArray();
+    }
+
+    public static string ByteArrayToString(byte[] arrInput)
+    {
+        int i;
+        var sOutput = new StringBuilder(arrInput.Length);
+        for (i=0;i < arrInput.Length; i++)
+        {
+            sOutput.Append(arrInput[i].ToString("X2"));
+        }
+        return sOutput.ToString();
+    }
+
 }

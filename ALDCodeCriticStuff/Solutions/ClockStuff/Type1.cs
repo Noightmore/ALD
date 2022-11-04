@@ -8,32 +8,33 @@ public class Type1 : AnalogClock
 
     public Type1(byte hour, byte minute, byte second) : base(hour, minute, second)
     {
-        this.ASegment = PoweredState.Off;
-        this.BSegment = PoweredState.Off;
         this.ComputeSegments();
     }
 
-    internal sealed override void ComputeSegments()
+    protected internal sealed override void ComputeSegments()
     {
-        if (Hour is 9 or 21|| Minute is 45 || Second is 45)
+        if (Hour is 9 or 21 || Minute is 45 || Second is 45)
         {
             ASegment = PoweredState.On;
         }
-        if (Hour is 6 or 18|| Minute is 30 || Second is 30)
+        else
+        {
+            this.ASegment = PoweredState.Off;
+        }
+        if (Hour is 6 or 18 || Minute is 30 || Second is 30)
         {
             BSegment = PoweredState.On;
         }
-    }
-    
-    // TODO: implement better hashing method
-    public override int GetHashCode()
-    {
-        unchecked
+        else
         {
-            var result = ASegment.GetHashCode();
-            result = (result*397) ^ (BSegment.GetHashCode());
-            return result;
+            this.BSegment = PoweredState.Off;
         }
+    }
+
+    protected override byte[] GetSegmentRawData()
+    {
+        return ObjectToByteArray(ASegment)
+            .Concat(ObjectToByteArray(BSegment)).ToArray();
     }
 }
 
