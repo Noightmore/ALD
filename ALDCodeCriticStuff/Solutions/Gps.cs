@@ -88,27 +88,33 @@ public static class Gps
         
         visitedCities[startCityIndex] = true;
 
-        var progressTracker = new ulong[CityData.Cities.Count, CityData.Cities.Count];
+        var progressTracker = new List<ulong[]>();
+        var currentState = new ulong[CityData.Cities.Count];
         for (var i = 0; i < CityData.Cities.Count; i++)
         {
             if (i == startCityIndex)
             {
-                progressTracker[0, i] = 0;
+                currentState[i] = 0;
                 continue;
             }
-            progressTracker[0, i] = CityData.Infinity;
+            currentState[i] = CityData.Infinity;
         }
+        progressTracker.Add(currentState);
+        
+        var smallestDistanceIndex = currentCityIndex;
+        var solvingCycleIndex = progressTracker.Count;
         #endregion
         
         #region Dijkstra solver
         
         var totalDistance = (ulong) 0;
-        var smallestDistanceIndex = currentCityIndex;
         
-        for (var solvingCycleIndex = 1; solvingCycleIndex < CityData.Cities.Count; solvingCycleIndex++)
+        while(currentCityIndex != endCityIndex && solvingCycleIndex < CityData.Cities.Count)
         {
             var smallestDistance = (ulong) CityData.Infinity;
             
+            progressTracker.Add(new ulong[CityData.Cities.Count]);
+            solvingCycleIndex = progressTracker.Count-1;
             
             for (var i = 0; i < CityData.Cities.Count; i++)
             {
@@ -124,13 +130,13 @@ public static class Gps
 
                 // if the distance to the current city being pointed is shorter than the previous shortest distance
                 // to the current city being pointed, update the shortest distance
-                if (progressTracker[solvingCycleIndex - 1, i] > distanceToPointedCity + totalDistance)
+                if (progressTracker[solvingCycleIndex - 1][i] > distanceToPointedCity + totalDistance)
                 {
-                    progressTracker[solvingCycleIndex, i] = distanceToPointedCity + totalDistance;
+                    progressTracker[solvingCycleIndex][i] = distanceToPointedCity + totalDistance;
                 }
                 else
                 {
-                    progressTracker[solvingCycleIndex, i] = progressTracker[solvingCycleIndex - 1, i] + totalDistance;
+                    progressTracker[solvingCycleIndex - 1][i] = progressTracker[solvingCycleIndex][i] + totalDistance;
                 }
 
                 if (smallestDistance <= distanceToPointedCity) continue;
@@ -138,7 +144,6 @@ public static class Gps
                 smallestDistanceIndex = i;
                 
             }
-            
             totalDistance += smallestDistance;
             currentCityIndex = smallestDistanceIndex;
             // resolve updating of current city index and keeping record of the smallest distance index
