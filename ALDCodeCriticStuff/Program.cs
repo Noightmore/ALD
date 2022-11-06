@@ -8,5 +8,6 @@ using ALDCodeCriticStuff.Solutions;
 //HratkySFifo.Evaluate();
 
 //UniqueNumbers.Evaluate();
-WordCount.Evaluate();
+//WordCount.Evaluate();
+Gps.Evaluate();
 //ClockTo7SegmentNumber.Evaluate();
