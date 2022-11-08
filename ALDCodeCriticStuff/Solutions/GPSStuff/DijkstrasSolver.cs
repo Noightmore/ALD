@@ -3,15 +3,22 @@ namespace ALDCodeCriticStuff.Solutions.GPSStuff;
 public class DijkstrasSolver
 {
     public Vertex CurrentVertex { get; set; }
+    public int EndCityIndex { get; set; }
+    public bool[] IsVisited { get; set; }
     
-    private DijkstrasSolver(Vertex startVertex)
+    //TODO: store reference to CityData.Distances;
+    
+    private DijkstrasSolver(Vertex startVertex, int endCityIndex)
     {
         this.CurrentVertex = startVertex;
+        this.EndCityIndex = endCityIndex;
+        this.IsVisited = new bool[CityData.Cities.Count];
     }
     
-    public static DijkstrasSolver Create(int startingCityIndex)
+    public static DijkstrasSolver Create(int startingCityIndex, int endCityIndex)
     {
-        return new DijkstrasSolver(new Vertex(startingCityIndex, null, 0));
+        var startingVertex = new Vertex(startingCityIndex, null, 0);
+        return new DijkstrasSolver(startingVertex, endCityIndex);
     }
 
     public int AddNextVertex(int idOfNextCity, ulong distance)
