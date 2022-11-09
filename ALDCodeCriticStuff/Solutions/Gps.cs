@@ -12,9 +12,11 @@ public static class Gps
             input = GetUserInput();
             if (input == null) continue;
             
-            var solution = ComputeShortestPath(input);
-            Console.WriteLine(solution);
-
+            // var solution = ComputeShortestPath(input);
+            // Console.WriteLine(solution);
+            var solver = DijkstrasSolver.Create(input);
+            solver.Solve();
+            
         } while (input is not null);
     }
 
@@ -67,8 +69,7 @@ public static class Gps
         return info;
     }
 
-    // computes shortest path between cities using dijkstra algorithm
-    // TODO: turn this into a class with more readable code
+    // does not work
     private static string ComputeShortestPath(IReadOnlyList<int> input)
     {
         #region Initialisation

@@ -38,18 +38,18 @@ public static class UniqueNumbers
             var item = param.Key + ",";
 
             allLine += item;
-            if (param.Value!.Equals(Occurence.MoreThanOnce))
+            switch (param.Value)
             {
-                moreThanOnceLine += item;
-            }
-            else if (param.Value.Equals(Occurence.Once))
-            {
-                exactlyOnceLine += item;
-            }
-            else
-            {
-                Console.WriteLine("FATAL INTERNAL ERROR");
-                return;
+                case Occurence.MoreThanOnce:
+                    moreThanOnceLine += item;
+                    break;
+                case Occurence.Once:
+                    exactlyOnceLine += item;
+                    break;
+                case Occurence.NotAtAll:
+                default:
+                    Console.WriteLine("FATAL INTERNAL ERROR");
+                    return;
             }
         }
 

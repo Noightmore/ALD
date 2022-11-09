@@ -8,15 +8,12 @@ public class Vertex
     public Vertex? PreviousVertex { get; set; }
     public ulong DistanceToPreviousVertex { get; set; }
     
-    // true connection to the Next Vertex exists at such id (id = index of the array)
-    //public bool[] NextVertexIds { get; set; }
     
     public Vertex(int id, Vertex? previousVertex, ulong distanceToPreviousVertex)
     {
         Id = id;
         PreviousVertex = previousVertex;
         DistanceToPreviousVertex = distanceToPreviousVertex;
-        //NextVertexIds = new bool[CityData.Cities.Count];
     }
     
     

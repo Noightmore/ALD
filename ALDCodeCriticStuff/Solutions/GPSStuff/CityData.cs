@@ -14,7 +14,7 @@ public readonly struct CityData
         "jablonec-nad-nisou"
     });
     
-    // maximum unsigned 64-bit integer value
+    // maximum unsigned 32-bit integer value
     public const ulong Infinity = ulong.MaxValue;
 
     // max distance between two cities means that there is no connection between them
@@ -26,8 +26,9 @@ public readonly struct CityData
         new ReadOnlyCollection<ulong>(new ulong[] { 24, 10, 20, Infinity, 15, 30 }),
         new ReadOnlyCollection<ulong>(new ulong[] { 22, 52, Infinity, 15, Infinity, 22 }),
         new ReadOnlyCollection<ulong>(new ulong[] { 20, Infinity, Infinity, 30, 22, Infinity })
-    });
+    }); 
     
+    // T0DO: ADD THE OTHER ARRAY, BOTH ARE IDENTICAL ATM!!!!!!!!!!!!!!!!!!
     public static readonly ReadOnlyCollection<ReadOnlyCollection<ulong>> TimeDistances = new(new[]
     {
         new ReadOnlyCollection<ulong>(new ulong[] { Infinity, Infinity, 12, 24, 22, 20 }),
