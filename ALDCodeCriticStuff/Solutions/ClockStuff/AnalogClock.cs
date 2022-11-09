@@ -5,7 +5,6 @@ namespace ALDCodeCriticStuff.Solutions.ClockStuff;
 
 public abstract class AnalogClock
 {
-    
     // perhaps add a way to directly set segments
     protected AnalogClock(byte hour, byte minute, byte second)
     {

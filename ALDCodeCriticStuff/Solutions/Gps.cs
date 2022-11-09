@@ -11,12 +11,11 @@ public static class Gps
         {
             input = GetUserInput();
             if (input == null) continue;
-            
+
             // var solution = ComputeShortestPath(input);
             // Console.WriteLine(solution);
             var solver = DijkstrasSolver.Create(input);
             solver.Solve();
-            
         } while (input is not null);
     }
 
@@ -28,31 +27,23 @@ public static class Gps
         var info = new int[3];
 
         var line = Console.ReadLine();
-        if(string.IsNullOrEmpty(line)) return null;
-        
+        if (string.IsNullOrEmpty(line)) return null;
+
         var data = line.Split(' ');
-        if(data.Length != 3) return null; // invalid input case
-        
+        if (data.Length != 3) return null; // invalid input case
+
         // parse the start city index   
-        if(CityData.Cities.Contains(data[0]))
-        {
+        if (CityData.Cities.Contains(data[0]))
             info[0] = CityData.Cities.IndexOf(data[0]);
-        }
         else
-        {
             return null; // invalid input case
-        }
-        
+
         // parse the end city index
-        if(CityData.Cities.Contains(data[1]))
-        {
+        if (CityData.Cities.Contains(data[1]))
             info[1] = CityData.Cities.IndexOf(data[1]);
-        }
         else
-        {
             return null; // invalid input case
-        }
-        
+
         // parse the distance or time
         switch (data[2])
         {
@@ -65,7 +56,7 @@ public static class Gps
             default:
                 return null; // invalid input case
         }
-        
+
         return info;
     }
 }

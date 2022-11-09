@@ -9,7 +9,7 @@ public static class UniqueNumbers
         {
             var line = Console.ReadLine()?.Split(",");
             if (line is null) break;
-            
+
             if (string.IsNullOrEmpty(line.FirstOrDefault())) break;
 
             foreach (var number in line.Select(int.Parse).ToArray())
