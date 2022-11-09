@@ -1,3 +1,5 @@
+using System.Collections.ObjectModel;
+
 namespace ALDCodeCriticStuff.Solutions.GPSStuff;
 
 public class DijkstrasSolver
@@ -6,19 +8,23 @@ public class DijkstrasSolver
     public int EndCityIndex { get; set; }
     public bool[] IsVisited { get; set; }
     
-    //TODO: store reference to CityData.Distances;
-    
-    private DijkstrasSolver(Vertex startVertex, int endCityIndex)
+    public ReadOnlyCollection<ReadOnlyCollection<ulong>> Distances { get; }
+
+    private DijkstrasSolver(Vertex startVertex, int endCityIndex, ReadOnlyCollection<ReadOnlyCollection<ulong>> distances)
     {
-        this.CurrentVertex = startVertex;
+        this.CurrentVertex = startVertex; 
         this.EndCityIndex = endCityIndex;
         this.IsVisited = new bool[CityData.Cities.Count];
+        this.Distances = distances;
     }
     
-    public static DijkstrasSolver Create(int startingCityIndex, int endCityIndex)
+    public static DijkstrasSolver Create(byte[] data)
     {
-        var startingVertex = new Vertex(startingCityIndex, null, 0);
-        return new DijkstrasSolver(startingVertex, endCityIndex);
+        var startingVertex = new Vertex(data[0], null, 0);
+        var endCityIndex = data[1];
+        var distanceTable = data[2] == 0 ? CityData.Distances : CityData.TimeDistances;
+        
+        return new DijkstrasSolver(startingVertex, endCityIndex, distanceTable);
     }
 
     public int AddNextVertex(int idOfNextCity, ulong distance)

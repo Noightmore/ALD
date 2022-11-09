@@ -9,5 +9,5 @@ using ALDCodeCriticStuff.Solutions;
 
 //UniqueNumbers.Evaluate();
 //WordCount.Evaluate();
-Gps.Evaluate();
-//ClockTo7SegmentNumber.Evaluate();
+//Gps.Evaluate();
+ClockTo7SegmentNumber.Evaluate();
