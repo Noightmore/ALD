@@ -38,8 +38,8 @@ public static class Transpose
         }
     }
 
-    private static void PrintFormattedMatrix<T>(T[,] matrix)
-    {
-        
-    }
+    // private static void PrintFormattedMatrix<T>(T[,] matrix)
+    // {
+    //     
+    // }
 }

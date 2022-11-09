@@ -8,12 +8,15 @@ public class DijkstrasSolver
     private int EndCityIndex { get; set; }
     private bool[] IsVisited { get; set; }
     private List<Vertex> Vertices { get; set; }
+    private bool IsPrimaryDistanceTime { get; set; }
     private ReadOnlyCollection<ReadOnlyCollection<ulong>> Distances { get; }
+    private ReadOnlyCollection<ReadOnlyCollection<ulong>> SecondaryDistances { get; }
 
     private DijkstrasSolver(
         int startCityIndex,
         int endCityIndex,
-        ReadOnlyCollection<ReadOnlyCollection<ulong>> distances)
+        ReadOnlyCollection<ReadOnlyCollection<ulong>> distances,
+        ReadOnlyCollection<ReadOnlyCollection<ulong>> secondaryDistances, bool isPrimaryDistanceTime)
     {
         this.StartCityIndex = startCityIndex; 
         this.EndCityIndex = endCityIndex;
@@ -23,7 +26,9 @@ public class DijkstrasSolver
         for (var i = 0; i < this.IsVisited.Length; i++) this.IsVisited[i] = false;
 
         this.Distances = distances;
-        
+        SecondaryDistances = secondaryDistances;
+        this.IsPrimaryDistanceTime = isPrimaryDistanceTime;
+
         this.Vertices = new List<Vertex>();
     }
     
@@ -34,8 +39,15 @@ public class DijkstrasSolver
         var endCityIndex = data[1];
         var distanceTable = 
             data[2] is 0 ? CityData.Distances : CityData.TimeDistances;
-        
-        return new DijkstrasSolver(startingCityIndex, endCityIndex, distanceTable);
+        var secondaryDistanceTable = 
+            data[2] is 0 ? CityData.TimeDistances : CityData.Distances;
+        var primaryDistanceType = data[2] is not 0;
+        return new DijkstrasSolver(
+            startingCityIndex,
+            endCityIndex, 
+            distanceTable,
+            secondaryDistanceTable,
+            primaryDistanceType);
     }
 
 
@@ -66,6 +78,18 @@ public class DijkstrasSolver
         return string.Join(" -> ", cities);
     }
 
+    private static ulong GetTheTotalSecondaryDistanceToStartFromGivenVertex(Vertex vertex)
+    {
+        var tempVertex = vertex;
+        ulong totalDistance = 0;
+        while(tempVertex.PreviousVertex != null)
+        {
+            totalDistance += tempVertex.SecondaryDistanceValue;
+            tempVertex = tempVertex.PreviousVertex;
+        }
+        return totalDistance;
+    }
+
     // records each vertex that is not yet visited and has a distance to the current vertex
     private void MapAllVertices(Vertex currentVertex)
     {
@@ -80,7 +104,14 @@ public class DijkstrasSolver
             {
                 if (!this.IsVisited[i] && this.Distances[currentVertex.Id][i] is not CityData.Infinity)
                 {
-                    this.Vertices.Add(new Vertex(i, currentVertex, this.Distances[currentVertex.Id][i]));
+                    this.Vertices.Add(
+                        new Vertex(
+                            i, 
+                            currentVertex,
+                            this.Distances[currentVertex.Id][i],
+                            this.SecondaryDistances[currentVertex.Id][i]
+                            ));
+                    
                     // debug:
                     //Console.WriteLine($"Added path {CityData.Cities[currentVertex.Id]}  to {CityData.Cities[i]} of length {this.Distances[currentVertex.Id][i]}");
                 }
@@ -92,7 +123,8 @@ public class DijkstrasSolver
             // get the next vertex to visit
             currentVertex = this.Vertices
                 .Where(x => this.IsVisited[x.Id] is false).MinBy(x => x.DistanceToPreviousVertex)!;
-            Console.WriteLine($"Next vertex to visit is {CityData.Cities[currentVertex.Id]}");
+            // more debug logging:
+            //Console.WriteLine($"Next vertex to visit is {CityData.Cities[currentVertex.Id]}");
             
         }
     }
@@ -100,7 +132,8 @@ public class DijkstrasSolver
 
     public void Solve()
     {
-        var startingVertex = new Vertex(this.StartCityIndex, null, 0);
+        var startingVertex = 
+            new Vertex(this.StartCityIndex, null, 0, 0);
         this.MapAllVertices(startingVertex);
         
         // co kdyz existuji 2 nejkratsi cesty do cile? 
@@ -109,10 +142,12 @@ public class DijkstrasSolver
         
         var endVertex = this.Vertices.Where(v => v.Id == this.EndCityIndex).MinBy(GetTotalDistanceToStartFromGivenVertex)!;
         var totalDistance = GetTotalDistanceToStartFromGivenVertex(endVertex);
+        var totalSecondaryDistance = GetTheTotalSecondaryDistanceToStartFromGivenVertex(endVertex);
         var path = GetAllCitiesOnThePathToStartFromGivenVertex(endVertex);
-        
-        Console.WriteLine(path);
-        Console.WriteLine(totalDistance);
+
+        var first = IsPrimaryDistanceTime ? totalDistance : totalSecondaryDistance;
+        var second = !IsPrimaryDistanceTime ? totalDistance : totalSecondaryDistance;
+        Console.WriteLine($"({first} min, {second} km) {path}");
         
     }
 }
