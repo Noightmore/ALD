@@ -8,6 +8,8 @@ public class Vertex
     public Vertex? PreviousVertex { get; set; }
     public ulong DistanceToPreviousVertex { get; set; }
     
+    // TODO: also add time information about the time distance to previous vertex
+    
     
     public Vertex(int id, Vertex? previousVertex, ulong distanceToPreviousVertex)
     {

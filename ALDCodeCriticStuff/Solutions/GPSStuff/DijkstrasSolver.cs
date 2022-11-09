@@ -73,14 +73,16 @@ public class DijkstrasSolver
         while (this.IsVisited.Any(x => x == false))
         {
             // mark the current vertex as visited
-            this.IsVisited[currentVertex!.Id] = true;
+            this.IsVisited[currentVertex.Id] = true;
             
             // record all vertices that are not yet visited and have a distance to the current vertex
             for (var i = 0; i < this.Distances[currentVertex.Id].Count; i++)
             {
-                if (!this.IsVisited[i] && this.Distances[currentVertex.Id][i] is not CityData.Infinity and not 0)
+                if (!this.IsVisited[i] && this.Distances[currentVertex.Id][i] is not CityData.Infinity)
                 {
                     this.Vertices.Add(new Vertex(i, currentVertex, this.Distances[currentVertex.Id][i]));
+                    // debug:
+                    //Console.WriteLine($"Added path {CityData.Cities[currentVertex.Id]}  to {CityData.Cities[i]} of length {this.Distances[currentVertex.Id][i]}");
                 }
             }
             
@@ -90,35 +92,25 @@ public class DijkstrasSolver
             // get the next vertex to visit
             currentVertex = this.Vertices
                 .Where(x => this.IsVisited[x.Id] is false).MinBy(x => x.DistanceToPreviousVertex)!;
+            Console.WriteLine($"Next vertex to visit is {CityData.Cities[currentVertex.Id]}");
             
         }
-        
-        // if (this.IsVisited[currentVertex.Id]) return;
-        //
-        // var distances = this.Distances[currentVertex.Id];
-        // foreach (var path in distances)
-        // {
-        //     if(path is CityData.Infinity) continue;
-        //         
-        //     var idOfNextCity = distances.IndexOf(path);
-        //     var vertex = new Vertex(idOfNextCity, currentVertex, path);
-        //     Vertices.Add(vertex);
-        //     this.IsVisited[currentVertex.Id] = true;
-        //     this.MapAllVertices(vertex); // oof
-        // }
     }
     
 
     public void Solve()
     {
         var startingVertex = new Vertex(this.StartCityIndex, null, 0);
-        this.Vertices.Add(startingVertex);
         this.MapAllVertices(startingVertex);
         
-        // get vertex with index of end city
-        var endVertex = this.Vertices.Find(v => v.Id == this.EndCityIndex);
-        var totalDistance = GetTotalDistanceToStartFromGivenVertex(endVertex!);
-        var path = GetAllCitiesOnThePathToStartFromGivenVertex(endVertex!);
+        // co kdyz existuji 2 nejkratsi cesty do cile? 
+        // napr: liberec -> chrastava -> new-york -> ceska-lipa
+        // asi vrati ten prvni co najde, jako je to jedno realne
+        
+        var endVertex = this.Vertices.Where(v => v.Id == this.EndCityIndex).MinBy(GetTotalDistanceToStartFromGivenVertex)!;
+        var totalDistance = GetTotalDistanceToStartFromGivenVertex(endVertex);
+        var path = GetAllCitiesOnThePathToStartFromGivenVertex(endVertex);
+        
         Console.WriteLine(path);
         Console.WriteLine(totalDistance);
         
