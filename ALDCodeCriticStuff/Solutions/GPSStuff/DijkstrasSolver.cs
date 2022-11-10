@@ -42,6 +42,7 @@ public class DijkstrasSolver
         var secondaryDistanceTable =
             data[2] is 0 ? ref CityData.TimeDistances : ref CityData.Distances;
         var primaryDistanceType = data[2] is not 0;
+        
         return new DijkstrasSolver(
             startingCityIndex,
             endCityIndex,
@@ -133,8 +134,8 @@ public class DijkstrasSolver
         MapAllVertices(startingVertex);
 
         // co kdyz existuji 2 nejkratsi cesty do cile? 
-        // napr: liberec -> chrastava -> new-york -> ceska-lipa
-        // asi vrati ten prvni co najde, jako je to jedno realne
+        // kod realne uklada vsechny existujici cesty do cile, ale vypise jen tu prvni na kterou narazi
+        //Console.WriteLine(string.Join("\n", Vertices.Where(v => v.Id == EndCityIndex).Select(v => $"{CityData.Cities[v.Id]}: {GetTotalDistanceToStartFromGivenVertex(v)}")));
 
         var endVertex = Vertices.Where(v => v.Id == EndCityIndex).MinBy(GetTotalDistanceToStartFromGivenVertex)!;
         var totalDistance = GetTotalDistanceToStartFromGivenVertex(endVertex);
@@ -143,7 +144,7 @@ public class DijkstrasSolver
 
         var first = IsPrimaryDistanceTime ? totalDistance : totalSecondaryDistance;
         var second = !IsPrimaryDistanceTime ? totalDistance : totalSecondaryDistance;
-        // TODO: create ToString() method
+
         return $"({first} min, {second} km) {path}";
     }
 }
