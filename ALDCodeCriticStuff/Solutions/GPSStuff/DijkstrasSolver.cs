@@ -32,15 +32,15 @@ public class DijkstrasSolver
     private ReadOnlyCollection<ReadOnlyCollection<ulong>> Distances { get; }
     private ReadOnlyCollection<ReadOnlyCollection<ulong>> SecondaryDistances { get; }
 
-    public static DijkstrasSolver Create(IReadOnlyList<int> data)
+    public static DijkstrasSolver Create(ref IReadOnlyList<int> data)
     {
         // vars for better code readability
         var startingCityIndex = data[0];
         var endCityIndex = data[1];
         var distanceTable =
-            data[2] is 0 ? CityData.Distances : CityData.TimeDistances;
+            data[2] is 0 ? ref CityData.Distances : ref CityData.TimeDistances;
         var secondaryDistanceTable =
-            data[2] is 0 ? CityData.TimeDistances : CityData.Distances;
+            data[2] is 0 ? ref CityData.TimeDistances : ref CityData.Distances;
         var primaryDistanceType = data[2] is not 0;
         return new DijkstrasSolver(
             startingCityIndex,
@@ -126,7 +126,7 @@ public class DijkstrasSolver
     }
 
 
-    public void Solve()
+    public string Solve()
     {
         var startingVertex =
             new Vertex(StartCityIndex, null, 0, 0);
@@ -143,6 +143,7 @@ public class DijkstrasSolver
 
         var first = IsPrimaryDistanceTime ? totalDistance : totalSecondaryDistance;
         var second = !IsPrimaryDistanceTime ? totalDistance : totalSecondaryDistance;
-        Console.WriteLine($"({first} min, {second} km) {path}");
+        // TODO: create ToString() method
+        return $"({first} min, {second} km) {path}";
     }
 }

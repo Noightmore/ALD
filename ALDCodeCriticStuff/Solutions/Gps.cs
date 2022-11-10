@@ -14,8 +14,9 @@ public static class Gps
 
             // var solution = ComputeShortestPath(input);
             // Console.WriteLine(solution);
-            var solver = DijkstrasSolver.Create(input);
-            solver.Solve();
+            var solver = DijkstrasSolver.Create(ref input);
+            var formattedSolution = solver.Solve();
+            Console.WriteLine(formattedSolution);
         } while (input is not null);
     }
 
