@@ -51,19 +51,22 @@ public static class WordCount
         var sortedPhrases =
             phrases.OrderByDescending(x => x.Value).Take(15);
 
+        // get sum of all words
+        var sumWords = words.Select(x => x.Value).Sum(Convert.ToInt64);
+        var sumPhrases = phrases.Select(x => x.Value).Sum(Convert.ToInt64);
+        
         Console.WriteLine("Word Frequency:");
         foreach (var word in sortedWords)
         {
-            // TODO: fix this
-            // sus prepocet na procenta
-            var percentage = Math.Round(word.Value / (double) words.Count * 100, 2);
+          
+            var percentage = Math.Round(word.Value / (decimal) sumWords * 100, 2);
             Console.WriteLine($" - {word.Key,-12} {percentage}% ({word.Value})");
         }
 
         Console.WriteLine("Phrase Frequency:");
         foreach (var phrase in sortedPhrases)
         {
-            var percentage = Math.Round(phrase.Value / (double) phrases.Count * 100, 2);
+            var percentage = Math.Round(phrase.Value / (decimal) sumPhrases * 100, 2);
             Console.WriteLine($" - {phrase.Key,-20} {percentage}% ({phrase.Value})");
         }
     }
