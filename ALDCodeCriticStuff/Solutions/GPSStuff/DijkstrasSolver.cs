@@ -75,7 +75,7 @@ public class DijkstrasSolver
             cities.Add(CityData.Cities[tempVertex.Id]);
             tempVertex = tempVertex.PreviousVertex;
         }
-
+        
         cities.Add(CityData.Cities[tempVertex.Id]);
         cities.Reverse();
         return string.Join(" -> ", cities);

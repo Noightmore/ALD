@@ -54,6 +54,8 @@ public static class WordCount
         Console.WriteLine("Word Frequency:");
         foreach (var word in sortedWords)
         {
+            // TODO: fix this
+            // sus prepocet na procenta
             var percentage = Math.Round(word.Value / (double) words.Count * 100, 2);
             Console.WriteLine($" - {word.Key,-12} {percentage}% ({word.Value})");
         }
