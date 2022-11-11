@@ -36,6 +36,7 @@ public static class WordCount
 
         var textArray = text.ToString().Split(' ', StringSplitOptions.RemoveEmptyEntries);
 
+        // last word is not a phrase (if phrase count is an odd number)
         for (var i = 0; i < textArray.Length - 1; i++)
         {
             var phrase = textArray[i] + " " + textArray[i + 1];
