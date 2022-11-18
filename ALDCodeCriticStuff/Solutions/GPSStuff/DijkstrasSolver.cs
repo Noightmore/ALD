@@ -105,16 +105,21 @@ public class DijkstrasSolver
 
             // record all vertices that are not yet visited and have a distance to the current vertex
             for (var i = 0; i < Distances[currentVertex.Id].Count; i++)
-                if (!IsVisited[i] && Distances[currentVertex.Id][i] is not CityData.Infinity)
-                    Vertices.Add(
-                        new Vertex(
-                            i,
-                            currentVertex,
-                            Distances[currentVertex.Id][i],
-                            SecondaryDistances[currentVertex.Id][i]
-                        ));
-            // debug:
-            //Console.WriteLine($"Added path {CityData.Cities[currentVertex.Id]}  to {CityData.Cities[i]} of length {this.Distances[currentVertex.Id][i]}");
+            {
+                if (Distances[currentVertex.Id][i] is CityData.Infinity) continue;
+                
+                Vertices.Add(
+                    new Vertex(
+                        i,
+                        currentVertex,
+                        Distances[currentVertex.Id][i],
+                        SecondaryDistances[currentVertex.Id][i]
+                    ));
+                // debug:
+                // Console.WriteLine(
+                //     $"Added backwards path from {CityData.Cities[currentVertex.Id]} to {CityData.Cities[i]} of length {this.Distances[currentVertex.Id][i]}");
+            }
+
             // if the end city is already visited, we can stop
             if (IsVisited[EndCityIndex]) break;
 
@@ -135,7 +140,7 @@ public class DijkstrasSolver
 
         // co kdyz existuji 2 nejkratsi cesty do cile? 
         // kod realne uklada vsechny existujici cesty do cile, ale vypise jen tu prvni na kterou narazi
-        //Console.WriteLine(string.Join("\n", Vertices.Where(v => v.Id == EndCityIndex).Select(v => $"{CityData.Cities[v.Id]}: {GetTotalDistanceToStartFromGivenVertex(v)}")));
+        //Console.WriteLine(string.Join(", ", Vertices.Where(v => v.Id == EndCityIndex).Select(v => $"{CityData.Cities[v.Id]}: {GetTotalDistanceToStartFromGivenVertex(v)}")));
 
         var endVertex = Vertices.Where(v => v.Id == EndCityIndex).MinBy(GetTotalDistanceToStartFromGivenVertex)!;
         var totalDistance = GetTotalDistanceToStartFromGivenVertex(endVertex);
