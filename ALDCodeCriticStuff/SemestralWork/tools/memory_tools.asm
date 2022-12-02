@@ -55,7 +55,7 @@ mmap:
 ; @returns
 ;   Address of allocated memory in rax
 ;
-malloc:
+simple_malloc:
     push rbp
     mov rbp, rsp
 
