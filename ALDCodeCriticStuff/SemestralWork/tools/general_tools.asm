@@ -54,6 +54,33 @@ assert_null_end:
     ret
 
 ;------------------------------------------
+; Parse string to unsigned 64bit integer (ulong ulong)
+; @param rdi
+;   Pointer to string to parse.
+parse_uint64:
+    push rbp
+    mov rbp, rsp
+
+    xor rax, rax
+    _nextChar:
+        movzx rcx, byte [rdi]
+        inc rdi
+        cmp rcx, '0' ; is valid??
+        jb _end
+        cmp rcx, '9' ; is valid??
+        ja _end
+        sub rcx, '0'
+        imul rax, 10
+        add rax, rcx
+        jmp _nextChar
+
+    _end:
+        leave
+        ret
+
+
+
+;------------------------------------------
 ; Exit the program.
 ;
 ; @param rdi

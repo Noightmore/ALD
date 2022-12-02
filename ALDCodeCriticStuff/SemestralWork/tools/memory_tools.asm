@@ -61,13 +61,26 @@ simple_malloc:
 
     push rdi
 
-    ; if this is the first call then allocate 10 pages of memory
-    ; lets just assume we wont need more than 10 pages for now...
     mov rax, [malloc_init]
     cmp rax, 0x0
     jne malloc_do_init
 
-    mov rdi, 40960 ; 40 KB = 10 pages
+    ; calculates the total amount of memory based on the size of the 2D array
+    ; rdi * rdi/8 (bit shift right 3, dont do div) * 1 (1 byte per cell)
+    ; so basically rdi * rdi/8
+
+    ; example 1000x1000 grid will take 8 megabytes of virtual memory (8000 * 1000) rounded up to the nearest page
+    ; so in total this will require 1953.125 pages (1954 pages rounded up) so 8003584 bytes
+
+    mov rax, rdi
+    shr rax, 3
+    mul rdi
+
+    mov rdi, rax
+    push rdi
+    call print_num
+    pop rdi
+    ;mov rdi, 409600 ; 400 KB = 100 pages
     call mmap
 
     mov [malloc_memory], rax
