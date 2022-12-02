@@ -6,11 +6,13 @@
 %include "./tools/memory_tools.asm"
 
 section .rodata
-    x64_ptr_size equ 8 ; 64-bit pointers are 8 bytes
+    x86_64_ptr_byte_size equ 8 ; 64-bit pointers are 8 bytes
 
 section .bss
-    grid_size: resq 1 ; an actual 64-bit value
+    page_size: resq 1 ; an actual 64-bit value
     grid: resq 1 ; pointer to the start of the grid 2D array
+    seed: resq 1 ; seed for the random number generator
+    page_id: resq 1 ; page id for the random number generator
 
 section .text
     global _start
@@ -21,20 +23,15 @@ _start:
     ; second one is the name of the program which is not cared about
     ; any other garbage on stack is to not be cared about
     call parse_uint64
-    mov [grid_size], rax
+    mov [page_size], rax
 
-
-    mov rdi, [grid_size] ; rdi = size
-    ;call print_num
     ; allocate memory for the grid
-    mov rax, [grid_size] ; grid row count
+    mov rax, [page_size] ; grid row count
     mov rdi, 8
     mul rdi ; rax = rax * rdi
     mov rdi, rax
-    ;call print_num
     call simple_malloc ; rax contains the address of the allocated memory
     mov [grid], rax ; store the address of the allocated memory in grid
-
 
     call exit
 

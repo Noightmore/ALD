@@ -26,7 +26,7 @@ mmap:
     mov rdi, 0x0 ; kernel chooses address
     pop rsi ; number of bytes to map
     mov rdx, 0x3 ; PROT_READ | PROT_WRITE
-    mov r10, 0x22 ; MAP_PRIVATE | MAP_ANONYMOUS ; note maybe map shared for async
+    mov r10, 0x22 ; MAP_PRIVATE | MAP_ANONYMOUS
     mov r8, 0x0 ; no backing file
     mov r9, 0x0 ; no offset
 
@@ -61,7 +61,7 @@ simple_malloc:
 
     push rdi
 
-    mov rax, [malloc_init]
+    mov rax, [malloc_init] ; check if we have already mapped memory once
     cmp rax, 0x0
     jne malloc_do_init
 
@@ -75,11 +75,10 @@ simple_malloc:
     mov rax, rdi
     shr rax, 3
     mul rdi
-
     mov rdi, rax
-    push rdi
-    call print_num
-    pop rdi
+;    push rdi
+;    call print_num
+;    pop rdi
     ;mov rdi, 409600 ; 400 KB = 100 pages
     call mmap
 
