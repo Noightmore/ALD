@@ -34,3 +34,17 @@ section .rodata
     tile40 db "   ",0
     tile41 db "-| ",0
     tile42 db " | ",0
+
+    ; text representation of the sixth tile
+    ; nibble representation of the sixth tile: 0b0101
+    tile5: dq tile50, tile51, tile52
+    tile50 db " | ",0
+    tile51 db " | ",0
+    tile52 db " | ",0
+
+    ; text representation of the seventh tile
+    ; nibble representation of the seventh tile: 0b1010
+    tile6: dq tile60, tile61, tile62
+    tile60 db "   ",0
+    tile61 db "---",0
+    tile62 db "   ",0
