@@ -11,4 +11,4 @@ pouze funguje na x86_64 linuxovym systemu
 
 `make`
 
-`./build/gridGenerator <page-size>`
+`./LabyrinthGenerator/build/gridGenerator <grid-size> <seed>`

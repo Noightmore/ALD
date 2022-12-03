@@ -1,8 +1,8 @@
 gridGenerator: gridGenerator.o
-	ld ./build/gridGenerator.o -o	./build/gridGenerator
+	ld ./LabyrinthGenerator/build/gridGenerator.o -o	./LabyrinthGenerator/build/gridGenerator
 
-gridGenerator.o: main.asm
-	nasm -f elf64 main.asm -o ./build/gridGenerator.o
+gridGenerator.o: LabyrinthGenerator/main.asm
+	nasm -f elf64 ./LabyrinthGenerator/main.asm -o ./LabyrinthGenerator/build/gridGenerator.o
 
 clean:
-	rm ./build/*
+	rm ./LabyrinthGenerator/build/*

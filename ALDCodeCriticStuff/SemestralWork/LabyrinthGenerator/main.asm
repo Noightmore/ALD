@@ -1,18 +1,18 @@
 
 
-%include "./tools/interface_tools.asm"
-%include "./tools/general_tools.asm"
-%include "./tools/print_tools.asm"
-%include "./tools/memory_tools.asm"
+%include "./LabyrinthGenerator/user_interface/interface_tools.asm"
+%include "./LabyrinthGenerator/user_interface/tile_data.asm"
+%include "./LabyrinthGenerator/user_interface/print_tools.asm"
+%include "./LabyrinthGenerator/tools/memory_tools.asm"
+%include "./LabyrinthGenerator/tools/general_tools.asm"
 
 section .rodata
     x86_64_ptr_byte_size equ 8 ; 64-bit pointers are 8 bytes
 
 section .bss
-    page_size: resq 1 ; an actual 64-bit value
+    grid_size: resq 1 ; an actual 64-bit value
     grid: resq 1 ; pointer to the start of the grid 2D array
     seed: resq 1 ; seed for the random number generator
-    page_id: resq 1 ; page id for the random number generator
 
 section .text
     global _start
@@ -23,10 +23,14 @@ _start:
     ; second one is the name of the program which is not cared about
     ; any other garbage on stack is to not be cared about
     call parse_uint64
-    mov [page_size], rax
+    mov [grid_size], rax
+
+    pop rdi ; pops argument (seed for the random number generator)
+    call parse_uint64
+    mov [seed], rax
 
     ; allocate memory for the grid
-    mov rax, [page_size] ; grid row count
+    mov rax, [grid_size] ; grid row count
     mov rdi, 8
     mul rdi ; rax = rax * rdi
     mov rdi, rax
