@@ -1,14 +1,16 @@
 
 
 %include "./LabyrinthGenerator/user_interface/interface_tools.asm"
-;%include "./LabyrinthGenerator/user_interface/tile_data.asm"
+%include "./LabyrinthGenerator/user_interface/tile_data.asm"
 %include "./LabyrinthGenerator/user_interface/print_tools.asm"
 %include "./LabyrinthGenerator/tools/memory_tools.asm"
 %include "./LabyrinthGenerator/tools/general_tools.asm"
 
+%include "./LabyrinthGenerator/tests/test.asm"
+
 section .rodata
     x86_64_ptr_byte_size equ 8 ; 64-bit pointers are 8 bytes
-    newline db 0x0A, 0 ; newline character
+
 section .data
 
 section .bss
@@ -31,35 +33,32 @@ _start:
     call parse_uint64
     mov [seed], rax
 
-    ; allocate memory for the grid
+    ; allocation of memory for the grid --------------------------------------------------------------------------------
+    ;
     mov rax, [grid_size] ; grid row count
     mov rdi, 8
-    mul rdi ; rax = rax * rdi
+    mul rdi ; rax = rax * rdi (8)
     mov rdi, rax
     call simple_malloc ; rax contains the address of the allocated memory
     mov [grid], rax ; store the address of the allocated memory in grid
 
-    ; allocate each row
+    ; for loop that mallocs memory for each row of the grid
     xor rdx, rdx ; initialize row index
 
     _grid_allocator:
     push rdx ; push row index
 
+    ; allocates grid_size amount of bytes and stores it onto the stack
     mov rdi, [grid_size] ; grid column count
     call simple_malloc ; rax contains the address of the allocated memory
     push rax ; temporarily store the address of the allocated memory
 
-    ; compute position in the grid
+    ; compute position in the grid (pointer to the position to be new allocated row stored at)
+    ; saves it in rax
     mov rax, rdx ; get the pointer offset in the grid (index of the row)
     mov rcx, x86_64_ptr_byte_size
     mul rcx ; rax = rax * x86_64_ptr_byte_size
     add rax, [grid] ; rax = rax + grid (starting address of the grid)
-
-;    push rax
-;    mov rdi, rax
-;    call print_num
-;    pop rax
-
     pop rcx
     mov [rax], rcx ; store the address of the allocated memory in grid ; rax = pointer to the data
 
@@ -68,6 +67,25 @@ _start:
     cmp rdx, qword [grid_size] ; check if row index is less than grid row count
     jnz _grid_allocator
 
-    ; grid allocated
+    ; grid allocation done ---------------------------------------------------------------------------------------------
+    ;
+
+
+; print row pointers
+;    mov rax, [grid] ; get the address of the grid
+;    mov rcx, 0
+;    _printLoop:
+;        push rcx
+;        push rax
+;        mov rdi, [rax]
+;        call print_num
+;        pop rax
+;        add rax, x86_64_ptr_byte_size
+;        pop rcx
+;        inc rcx
+;        cmp rcx, [grid_size]
+;        jnz _printLoop
+
+
 
     call exit

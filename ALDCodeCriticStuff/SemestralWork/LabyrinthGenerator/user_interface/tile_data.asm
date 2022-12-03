@@ -48,3 +48,7 @@ section .rodata
     tile60 db "   ",0
     tile61 db "---",0
     tile62 db "   ",0
+
+section .text
+
+ret
