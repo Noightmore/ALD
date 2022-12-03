@@ -6,7 +6,6 @@
 %include "./LabyrinthGenerator/tools/memory_tools.asm"
 %include "./LabyrinthGenerator/tools/general_tools.asm"
 
-%include "./LabyrinthGenerator/tests/test.asm"
 
 section .rodata
     x86_64_ptr_byte_size equ 8 ; 64-bit pointers are 8 bytes
@@ -50,6 +49,7 @@ _start:
 
     ; allocates grid_size amount of bytes and stores it onto the stack
     mov rdi, [grid_size] ; grid column count
+    shr rdi, 1 ; rdi = rdi / 2 ; mem optimisation
     call simple_malloc ; rax contains the address of the allocated memory
     push rax ; temporarily store the address of the allocated memory
 
@@ -60,7 +60,7 @@ _start:
     mul rcx ; rax = rax * x86_64_ptr_byte_size
     add rax, [grid] ; rax = rax + grid (starting address of the grid)
     pop rcx
-    mov [rax], rcx ; store the address of the allocated memory in grid ; rax = pointer to the data
+    mov [rax], rcx ; store the address of the allocated memory in grid ; rax = pointer to the data row
 
     pop rdx ; pop row index
     inc rdx
@@ -86,6 +86,36 @@ _start:
 ;        cmp rcx, [grid_size]
 ;        jnz _printLoop
 
+; TODO: fill the grid with random values corresponding to the tile types
+; check whether they are valid one by one, if not, generate a new one and repeat this until a valid one is found
+; maybe add the filling to the generation part? Do everything in one loop?
 
+; compute first row
+mov rax, [grid] ; get the address of the grid
+mov rdi, [rax] ; get the address of the first row
+mov rsi, [grid_size] ; get the size of the grid
+_gen_first_row:
+    push rsi
+    push rdi
+    call gen_tile
+    ; is this first tile in the row?
+    pop rdi
+    pop rsi
+    add rdi, x86_64_ptr_byte_size
+    dec rsi
+    jnz _gen_first_row
+
+; TODO: print the grid, create own method of doing so, pain, but lesser pain than learning a graphics library
+; printing could also be added to the one loop cycle, rather not tho
 
     call exit
+
+; generates a random tile
+; returns the tile type in a duo, 8 bits. each duo is always compatible with each other
+gen_tile:
+    push rbp
+    mov rbp, rsp
+    ;TODO
+    ; generate random number
+    leave
+    ret
