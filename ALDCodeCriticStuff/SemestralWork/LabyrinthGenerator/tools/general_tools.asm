@@ -79,6 +79,48 @@ parse_uint64:
         ret
 
 
+;------------------------------------------
+; compute modulus
+; @param rdi
+;   dividend
+; @param rsi
+;   divisor
+; @return rax = rdi % rsi
+get_modulus:
+    push rbp
+    mov rbp, rsp
+
+    mov rax, rdi
+    mov rcx, rsi
+    xor rdx, rdx
+    div rcx
+    mov rax, rdx
+
+    leave
+    ret
+
+;------------------------------------------
+; String length calculation function
+; @param rdi
+;   Pointer to string to calculate length of.
+; @return rax = length of string
+get_string_len:
+    push rbp
+    mov rbp, rsp
+
+    xor rax, rax
+    _nextCharacter:
+        movzx rcx, byte [rdi]
+        inc rdi
+        cmp rcx, 0
+        je _slen_finished
+        inc rax
+        jmp _nextCharacter
+
+    _slen_finished:
+    leave
+    ret
+
 
 ;------------------------------------------
 ; Exit the program.

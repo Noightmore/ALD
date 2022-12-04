@@ -9,13 +9,14 @@
 
 section .rodata
     x86_64_ptr_byte_size equ 8 ; 64-bit pointers are 8 bytes
-
+    digits_vec: dq 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000
 section .data
 
 section .bss
     grid_size: resq 1 ; an actual 64-bit value
     grid: resq 1 ; pointer to the start of the grid 2D array
     seed: resq 1 ; seed for the random number generator
+    seed_len: resq 1 ; length of the seed
 
 section .text
     global _start
@@ -29,8 +30,14 @@ _start:
     mov [grid_size], rax
 
     pop rdi ; pops argument (seed for the random number generator)
+    push rdi ; pushes it back on the stack
     call parse_uint64
     mov [seed], rax
+
+    pop rdi ; pops argument (seed length)
+    ; calculate the len of the seed
+    call get_string_len
+    mov [seed_len], rax
 
     ; allocation of memory for the grid --------------------------------------------------------------------------------
     ;
@@ -69,7 +76,6 @@ _start:
 
     ; grid allocation done ---------------------------------------------------------------------------------------------
     ;
-
 
 ; print row pointers
 ;    mov rax, [grid] ; get the address of the grid
@@ -115,7 +121,118 @@ _gen_first_row:
 gen_tile:
     push rbp
     mov rbp, rsp
-    ;TODO
-    ; generate random number
+
+    ; generate a random number
+    call get_random_value_by_seed
+
+    ; converts the seed to id of the tile data
+;    mov rdi, [seed]
+;    mov rsi, tile_data_len
+;    shr rsi, 3 ; rsi = rsi / 8
+;    call get_modulus ; rax contains the modulus == position of the tile in the tile_data array
+
+    ; print the tile id
+;    push rax
+;    mov rdi, [seed];rax -- DEBUG
+;    call print_num
+;    pop rax
+
+    mov [seed], rax
+    leave
+    ret
+
+; get random value from tile_data by seed
+; returns the a random value based on previous input seed (stores it in seed variable)
+; this subroutine just replaces the contents of seed with the new pseudo random value
+get_random_value_by_seed:
+    push rbp
+    mov rbp, rsp
+
+    ; middle square method for generating random number by seed
+
+    ; square seed
+    mov rax, [seed]
+    mul rax
+    push rax ; back up squared seed on stack
+
+    ; loads trim divider-----------------
+    mov rax, [seed_len]
+    shr rax, 1 ; rax = rax / 2
+    dec rax
+    shl rax, 3 ; rdx = rdx * 8
+    add rax, digits_vec
+    mov rcx, [rax] ; get digit count by the amount of digits in the seed 1, 10, 100, 1000
+    ;-------------------------------------
+;    push rcx
+;    push rax
+;
+;    mov rdi, rcx
+;    call print_num ; DEBUG
+;
+;    pop rax
+;    pop rcx
+
+    pop rax ;  load squared seed
+    div rcx ; rax = rax / rcx ; digits[trim]
+
+    push rcx
+    push rax
+
+    mov rdi, rax
+    call print_num ; DEBUG
+
+    pop rax
+    pop rcx
+
+    xor rbx, rbx ; clear rdx
+    xor r10, r10 ; clear r10 ; index of loop
+    _foreachDigit:
+        push rcx ; backup seed digit count
+        push rbx ; backup rbx
+        push rax ; backup squared seed
+
+        mov rdi, rax
+        mov rsi, rcx
+        call get_modulus
+        push rax ; backup the modulus product
+
+        ; compute the digit id by loop iteration
+        mov rax, r10
+        shl rax, 3 ; rax = rax * 8
+        add rax, digits_vec
+        mov rcx, [rax] ; digit count for current iteration
+
+        pop rax ; modulus product
+        mul rcx ; rax = rax * rcx
+        mov rcx, rax
+
+        pop rax ; squared seed
+        pop rbx ; final product
+        ; rbx = rbx + rcx ; final_val + (squared seed % digit count of seed) * digit count of current iteration
+        add rbx, rcx
+        pop rcx ; restore seed digit count
+
+        push rbx ; backup final product
+
+;        push rax
+;        push r10
+;        push r11
+;        push rcx
+;        mov rdi, rax
+;        call print_num
+;        pop rcx
+;        pop r11
+;        pop r10
+;        pop rax
+
+        mov rbx, 10
+        div rbx ; rax = rax / r11 == rax = rax / 10
+        pop rbx ; load back final product
+
+
+    inc r10 ; increment index of loop
+    cmp r10, [seed_len]
+    jnz _foreachDigit
+
     leave
     ret
