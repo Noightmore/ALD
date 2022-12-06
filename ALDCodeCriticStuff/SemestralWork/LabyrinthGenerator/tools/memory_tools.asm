@@ -73,7 +73,7 @@ simple_malloc:
     ; so in total this will require 1953.125 pages (1954 pages rounded up) so 8003584 bytes
 
     mov rax, rdi
-    shr rax, 4 ; rax/3 by default for 8 bit cell representation, rax/4 for 4 bit cell representation
+    shr rax, 3 ; rax/3 by default for 8 bit cell representation, rax/4 for 4 bit cell representation
     mul rdi
     mov rdi, rax
 ;    push rdi

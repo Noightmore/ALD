@@ -1,7 +1,7 @@
 section .rodata
 
     ; text representation of the first tile
-    ; nibble representation of the first tile: 0b1111
+    ; bit representation of the first tile: 0b0000_1111
     tile0_bin: db 0x0F
     tile0: dq tile00, tile01, tile02
     tile00 db " | ",0
@@ -9,7 +9,7 @@ section .rodata
     tile02 db " | ",0
 
     ; text representation of the second tile
-    ; nibble representation of the second tile: 0b0010
+    ; bit representation of the second tile: 0b0000_0010
     tile1_bin: db 0x02
     tile1: dq tile10, tile11, tile12
     tile10 db "   ",0
@@ -17,7 +17,7 @@ section .rodata
     tile12 db "   ",0
 
     ; text representation of the third tile
-    ; nibble representation of the third tile: 0b0110
+    ; bit representation of the third tile: 0b0000_0110
     tile2_bin: db 0x06
     tile2: dq tile20, tile21, tile22
     tile20 db " | ",0
@@ -25,7 +25,7 @@ section .rodata
     tile22 db "   ",0
 
     ; text representation of the fourth tile
-    ; nibble representation of the fourth tile: 0b1100
+    ; bit representation of the fourth tile: 0b0000_1100
     tile3_bin: db 0x0C
     tile3: dq tile30, tile31, tile32
     tile30 db " | ",0
@@ -33,7 +33,7 @@ section .rodata
     tile32 db "   ",0
 
     ; text representation of the fifth tile
-    ; nibble representation of the fifth tile: 0b1001
+    ; bit representation of the fifth tile: 0b0000_1001
     tile4_bin: db 0x09
     tile4: dq tile40, tile41, tile42
     tile40 db "   ",0
@@ -41,7 +41,7 @@ section .rodata
     tile42 db " | ",0
 
     ; text representation of the sixth tile
-    ; nibble representation of the sixth tile: 0b0101
+    ; bit representation of the sixth tile: 0b0000_0101
     tile5_bin: db 0x05
     tile5: dq tile50, tile51, tile52
     tile50 db " | ",0
@@ -49,7 +49,7 @@ section .rodata
     tile52 db " | ",0
 
     ; text representation of the seventh tile
-    ; nibble representation of the seventh tile: 0b1010
+    ; bit representation of the seventh tile: 0b0000_1010
     tile6_bin: db 0x0A
     tile6: dq tile60, tile61, tile62
     tile60 db "   ",0

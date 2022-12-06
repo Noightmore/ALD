@@ -120,7 +120,7 @@ _gen_first_row:
     call exit
 
 ; generates a random tile
-; returns the tile type in a duo, 8 bits. each duo is always compatible with each other
+; returns the tile type in 8bit format 0b0000_1010
 gen_tile:
     push rbp
     mov rbp, rsp
@@ -133,9 +133,10 @@ gen_tile:
     mov rsi, tile_data_len
     shr rsi, 3 ; rsi = rsi / 8 ; rsi = tile_data_len / 8 ; convert pointer len to array len
     call get_modulus ; compute the id of the tile
-    mov rdi, rax ; rdi = id of the tile
-    call print_num
+    ;mov rdi, rax ; rdi = id of the tile
+    ;call print_num
     ; ------
+
 
 
 
@@ -182,7 +183,7 @@ xchg ax, dx
 ;
 test	dx, 8000h
 jz	Store
-and	dx, 7fffh ; ¯\_(ツ)_/¯
+and	dx, 7fffh ;	whack off the sign bit
 add	ax, 1 ;		inc doesn't set carry bit
 adc	dx, 0
 
