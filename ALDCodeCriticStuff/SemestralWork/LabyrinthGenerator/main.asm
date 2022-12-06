@@ -100,27 +100,52 @@ _start:
 ; maybe add the filling to the generation part? Do everything in one loop?
 
 ; compute first row
-mov rax, [grid] ; get the address of the grid
-mov rdi, [rax] ; get the address of the first row
+mov rax, [grid] ; get the address of the grid (pointer to the pointer to first row)
+mov rdi, [rax] ; get the address of the first item in the first row
 mov rsi, [grid_size] ; get the size of the grid
 _gen_first_row:
     push rsi
     push rdi
     call gen_tile
-    ; is this first tile in the row?
+    push rax ; backup the generated tile VALUE
+    cmp rsi, [grid_size] ; is this first tile in the row?
+    jz _store_tile ; skip left cell check
+
+    ; check if the cell to the left is compatible with the current one, newly generated
+
+    ; store
+    _store_tile:
+    pop rax
     pop rdi
+    mov [rdi], al ; store the generated tile VALUE
     pop rsi
-    add rdi, x86_64_ptr_byte_size
-    dec rsi
+    add rdi, 1 ; move to the next cell == 1 byte
+    dec rsi ; rsi == 0?????
     jnz _gen_first_row
 
 ; TODO: print the grid, create own method of doing so, pain, but lesser pain than learning a graphics library
 ; printing could also be added to the one loop cycle, rather not tho
 
-    call exit
+; print 1st row
+mov rax, [grid] ; get the address of the grid (pointer to the pointer to first row)
+mov rdi, [rax] ; get the address of the first item in the first row
+mov rsi, [grid_size] ; get the size of the grid
+_print_first_row:
+    push rsi
+    push rdi
+    mov rdi, [rdi]
+    call print_num
+
+    pop rdi
+    add rdi, 1 ; move to the next cell == 1 byte
+    pop rsi
+    dec rsi ; rsi == 0?????
+    jnz _print_first_row
+
+call exit
 
 ; generates a random tile
-; returns the tile type in 8bit format 0b0000_1010
+; returns the tile type in 8bit format 0b0000_1010 stores that value in rax in lower 8 bit (al)
 gen_tile:
     push rbp
     mov rbp, rsp
@@ -133,9 +158,36 @@ gen_tile:
     mov rsi, tile_data_len
     shr rsi, 3 ; rsi = rsi / 8 ; rsi = tile_data_len / 8 ; convert pointer len to array len
     call get_modulus ; compute the id of the tile
+
+    ;----------------- DEBUG -----------------
+    ;push rax ; store the id of the tile
     ;mov rdi, rax ; rdi = id of the tile
     ;call print_num
-    ; ------
+    ;pop rax
+    ; ----------------------------------------
+
+    ; get the tile data
+    mov rbx, tile_data ; get the address of the tile data
+    mov r10, x86_64_ptr_byte_size
+    mul r10 ; rax = rax * x86_64_ptr_byte_size
+    add rax, rbx ; rbx = rbx + rcx ; rbx = address of the tile data
+    mov rbx, [rax] ; rax = pointer to the tile data
+    xor rax, rax
+    mov al, [rbx]
+    ; weird garbage output when printing the tile type
+    ; xoring registers that are in the print function changes the garbage data hmmmmm
+;    xor rbx, rbx
+;    xor rcx, rcx
+;    xor rdx, rdx
+;    xor rsi, rsi
+;    xor r11, r11
+;    xor r10, r10
+;    xor r9, r9
+
+;--------------- debug printing
+;    mov rdi, rax    ; rdi = tile type
+;    call print_num
+;---------------
 
 
 
