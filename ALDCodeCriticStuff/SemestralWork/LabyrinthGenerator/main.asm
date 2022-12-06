@@ -9,14 +9,17 @@
 
 section .rodata
     x86_64_ptr_byte_size equ 8 ; 64-bit pointers are 8 bytes
-    digits_vec: dq 1, 10, 100, 1000, 10000, 100000, 1000000, 10000000, 100000000, 1000000000
+
+    A  equ	16807 ; ¯\_(ツ)_/¯
+    S0 equ seed ;	Low order word of seed
+    S1 equ seed + 2 ;	High order word of seed
 section .data
 
 section .bss
     grid_size: resq 1 ; an actual 64-bit value
     grid: resq 1 ; pointer to the start of the grid 2D array
     seed: resq 1 ; seed for the random number generator
-    seed_len: resq 1 ; length of the seed
+    ;seed_len: resq 1 ; length of the seed
 
 section .text
     global _start
@@ -34,10 +37,10 @@ _start:
     call parse_uint64
     mov [seed], rax
 
-    pop rdi ; pops argument (seed length)
-    ; calculate the len of the seed
-    call get_string_len
-    mov [seed_len], rax
+;    pop rdi ; pops argument (seed length)
+;    ; calculate the len of the seed
+;    call get_string_len
+;    mov [seed_len], rax
 
     ; allocation of memory for the grid --------------------------------------------------------------------------------
     ;
@@ -126,113 +129,66 @@ gen_tile:
     call get_random_value_by_seed
 
     ; converts the seed to id of the tile data
-;    mov rdi, [seed]
-;    mov rsi, tile_data_len
-;    shr rsi, 3 ; rsi = rsi / 8
-;    call get_modulus ; rax contains the modulus == position of the tile in the tile_data array
+    mov rdi, [seed]
+    mov rsi, tile_data_len
+    shr rsi, 3 ; rsi = rsi / 8 ; rsi = tile_data_len / 8 ; convert pointer len to array len
+    call get_modulus ; compute the id of the tile
+    mov rdi, rax ; rdi = id of the tile
+    call print_num
+    ; ------
 
-    ; print the tile id
-;    push rax
-;    mov rdi, [seed];rax -- DEBUG
-;    call print_num
-;    pop rax
 
-    mov [seed], rax
+
     leave
     ret
 
-; get random value from tile_data by seed
-; returns the a random value based on previous input seed (stores it in seed variable)
-; this subroutine just replaces the contents of seed with the new pseudo random value
+; directly manipulates with the seed data, internal method...
 get_random_value_by_seed:
-    push rbp
-    mov rbp, rsp
+push rbp
+mov rbp, rsp
 
-    ; middle square method for generating random number by seed
-
-    ; square seed
-    mov rax, [seed]
-    mul rax
-    push rax ; back up squared seed on stack
-
-    ; loads trim divider-----------------
-    mov rax, [seed_len]
-    shr rax, 1 ; rax = rax / 2
-    dec rax
-    shl rax, 3 ; rdx = rdx * 8
-    add rax, digits_vec
-    mov rcx, [rax] ; get digit count by the amount of digits in the seed 1, 10, 100, 1000
-    ;-------------------------------------
-;    push rcx
-;    push rax
 ;
-;    mov rdi, rcx
-;    call print_num ; DEBUG
+;	P2|P1|P0 := (S1|S0) * A
 ;
-;    pop rax
-;    pop rcx
+mov	ax, [S0]
+mov	bx, A
+mul	bx
+mov	si, dx ;	si := pp01  (pp = partial product)
+mov	di, ax ;	di := pp00 = P0
+mov	ax, [S1]
+mul	bx ;	ax := pp11
+add	ax, si ;	ax := pp11 + pp01 = P1
+adc	dx, 0 ;	dx := pp12 + carry = P2
 
-    pop rax ;  load squared seed
-    div rcx ; rax = rax / rcx ; digits[trim]
+;
+;	P2|P1:P0 = p * 2**31 + q, 0 <= q < 2**31
+;
+;	p = P2 SHL 1 + sign bit of P1 --> dx
+;		(P2:P1|P0 < 2**46 so p fits in a single word)
+;	q = (P1 AND 7FFFh)|P0 = (ax AND 7fffh) | di
+;
+shl	ax, 1
+rcl	dx, 1
+shr	ax, 1
+;
+;	dx:ax := p + q
+;
+add	dx, di ;	dx := p0 + q0
+adc	ax, 0 ;	ax := q1 + carry
+xchg ax, dx
+;
+;	if p+q < 2**31 then p+q is the new seed; otherwise whack
+;	  off the sign bit and add 1 and THATs the new seed
+;
+test	dx, 8000h
+jz	Store
+and	dx, 7fffh ; ¯\_(ツ)_/¯
+add	ax, 1 ;		inc doesn't set carry bit
+adc	dx, 0
 
-    push rcx
-    push rax
+Store:
+	mov	[S1], dx
+	mov	[S0], ax
 
-    mov rdi, rax
-    call print_num ; DEBUG
-
-    pop rax
-    pop rcx
-
-    xor rbx, rbx ; clear rdx
-    xor r10, r10 ; clear r10 ; index of loop
-    _foreachDigit:
-        push rcx ; backup seed digit count
-        push rbx ; backup rbx
-        push rax ; backup squared seed
-
-        mov rdi, rax
-        mov rsi, rcx
-        call get_modulus
-        push rax ; backup the modulus product
-
-        ; compute the digit id by loop iteration
-        mov rax, r10
-        shl rax, 3 ; rax = rax * 8
-        add rax, digits_vec
-        mov rcx, [rax] ; digit count for current iteration
-
-        pop rax ; modulus product
-        mul rcx ; rax = rax * rcx
-        mov rcx, rax
-
-        pop rax ; squared seed
-        pop rbx ; final product
-        ; rbx = rbx + rcx ; final_val + (squared seed % digit count of seed) * digit count of current iteration
-        add rbx, rcx
-        pop rcx ; restore seed digit count
-
-        push rbx ; backup final product
-
-;        push rax
-;        push r10
-;        push r11
-;        push rcx
-;        mov rdi, rax
-;        call print_num
-;        pop rcx
-;        pop r11
-;        pop r10
-;        pop rax
-
-        mov rbx, 10
-        div rbx ; rax = rax / r11 == rax = rax / 10
-        pop rbx ; load back final product
-
-
-    inc r10 ; increment index of loop
-    cmp r10, [seed_len]
-    jnz _foreachDigit
-
-    leave
-    ret
+leave
+ret
