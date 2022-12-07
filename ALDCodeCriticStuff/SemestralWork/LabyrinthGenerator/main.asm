@@ -33,7 +33,7 @@ _start:
     mov [grid_size], rax
 
     pop rdi ; pops argument (seed for the random number generator)
-    push rdi ; pushes it back on the stack
+    ;push rdi ; pushes it back on the stack
     call parse_uint64
     mov [seed], rax
 
@@ -59,7 +59,7 @@ _start:
 
     ; allocates grid_size amount of bytes and stores it onto the stack
     mov rdi, [grid_size] ; grid column count
-    shr rdi, 1 ; rdi = rdi / 2 ; mem optimisation
+    ;shr rdi, 1 ; rdi = rdi / 2 ; mem optimisation
     call simple_malloc ; rax contains the address of the allocated memory
     push rax ; temporarily store the address of the allocated memory
 
@@ -118,8 +118,8 @@ _gen_first_row:
     pop rax
     pop rdi
     mov [rdi], al ; store the generated tile VALUE
-    pop rsi
     add rdi, 1 ; move to the next cell == 1 byte
+    pop rsi
     dec rsi ; rsi == 0?????
     jnz _gen_first_row
 
@@ -133,11 +133,11 @@ mov rsi, [grid_size] ; get the size of the grid
 _print_first_row:
     push rsi
     push rdi
-    mov rdi, [rdi]
+    movzx rdi, byte [rdi]
     call print_num
 
     pop rdi
-    add rdi, 1 ; move to the next cell == 1 byte
+    inc rdi ; move to the next cell == 1 byte
     pop rsi
     dec rsi ; rsi == 0?????
     jnz _print_first_row
@@ -160,35 +160,26 @@ gen_tile:
     call get_modulus ; compute the id of the tile
 
     ;----------------- DEBUG -----------------
-    ;push rax ; store the id of the tile
-    ;mov rdi, rax ; rdi = id of the tile
-    ;call print_num
-    ;pop rax
+;    push rax ; store the id of the tile
+;    movzx rdi, byte al ; rdi = id of the tile
+;    call print_num
+;    pop rax
     ; ----------------------------------------
 
     ; get the tile data
-    mov rbx, tile_data ; get the address of the tile data
+    mov rbx, [tile_data] ; get the address of the first tile
     mov r10, x86_64_ptr_byte_size
     mul r10 ; rax = rax * x86_64_ptr_byte_size
-    add rax, rbx ; rbx = rbx + rcx ; rbx = address of the tile data
-    mov rbx, [rax] ; rax = pointer to the tile data
+    add rbx, rax ; rbx = rbx + rax ; rbx = address of the tile data ; rbx = pointer to the tile data
     xor rax, rax
-    mov al, [rbx]
-    ; weird garbage output when printing the tile type
-    ; xoring registers that are in the print function changes the garbage data hmmmmm
-;    xor rbx, rbx
-;    xor rcx, rcx
-;    xor rdx, rdx
-;    xor rsi, rsi
-;    xor r11, r11
-;    xor r10, r10
-;    xor r9, r9
+    mov al, byte [rbx]
 
-;--------------- debug printing
-;    mov rdi, rax    ; rdi = tile type
+;    push rax
+;;--------------- debug printing
+;    movzx rdi, byte al    ; rdi = tile type
 ;    call print_num
-;---------------
-
+;;---------------
+;    pop rax
 
 
 
