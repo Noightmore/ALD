@@ -10,7 +10,7 @@
 section .rodata
     x86_64_ptr_byte_size equ 8 ; 64-bit pointers are 8 bytes
 
-    A  equ	16807 ; ¯\_(ツ)_/¯
+    A  equ 16807 ; ¯\_(ツ)_/¯
     S0 equ seed ;	Low order word of seed
     S1 equ seed + 2 ;	High order word of seed
 section .data
