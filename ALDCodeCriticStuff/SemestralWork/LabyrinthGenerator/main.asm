@@ -1,238 +1,68 @@
+; LabyrinthGenerator
 
-
-%include "./LabyrinthGenerator/user_interface/interface_tools.asm"
-%include "./LabyrinthGenerator/user_interface/tile_data.asm"
-%include "./LabyrinthGenerator/user_interface/print_tools.asm"
-%include "./LabyrinthGenerator/tools/memory_tools.asm"
-%include "./LabyrinthGenerator/tools/general_tools.asm"
-
+extern print
+extern print_num
+extern parse_uint64
+extern exit
+extern get_random_value_by_seed
+extern allocate_grid
+extern populate_grid_with_tile_ids
 
 section .rodata
-    x86_64_ptr_byte_size equ 8 ; 64-bit pointers are 8 bytes
 
-    A  equ 16807 ; ¯\_(ツ)_/¯
-    S0 equ seed ;	Low order word of seed
-    S1 equ seed + 2 ;	High order word of seed
 section .data
+    ;seed: dq 7843
 
 section .bss
-    grid_size: resq 1 ; an actual 64-bit value
-    grid: resq 1 ; pointer to the start of the grid 2D array
-    seed: resq 1 ; seed for the random number generator
-    ;seed_len: resq 1 ; length of the seed
 
 section .text
     global _start
 
 _start:
+
     times 3 pop rdi ; pops argument (size of the grid) ; 2D grid is size x size big
     ; is popped 3 times bcs first arg is always number of args which is not cared about for now
     ; second one is the name of the program which is not cared about
     ; any other garbage on stack is to not be cared about
+    pop rsi ; pops the seed
+
+    ; allocate space for local variables
+    sub rsp, 16
+    ; rsp = grid size local variable
+    ; rsp+8 = seed
+
+    ; general_functions.parse_uint64(rdi)
     call parse_uint64
-    mov [grid_size], rax
+    mov [rsp+8], rax
 
-    pop rdi ; pops argument (seed for the random number generator)
-    ;push rdi ; pushes it back on the stack
+    mov rdi, rsi
+    ; general_functions.parse_uint64(rdi)
     call parse_uint64
-    mov [seed], rax
+    mov [rsp+16], rax
 
-;    pop rdi ; pops argument (seed length)
-;    ; calculate the len of the seed
-;    call get_string_len
-;    mov [seed_len], rax
+    mov rdi, [rsp+8] ; load grid size
+    ; grid.allocate_grid(rdi)
+    ;call allocate_grid ; allocate grid
 
-    ; allocation of memory for the grid --------------------------------------------------------------------------------
-    ;
-    mov rax, [grid_size] ; grid row count
-    mov rdi, 8
-    mul rdi ; rax = rax * rdi (8)
+    mov rdi, [rsp+16] ; load seed
+    ; grid.populate_grid(rdi)
+   ; call populate_grid_with_tile_ids ; populate grid
+
+    mov rsi, 20
+    _loop:
+
+    push rsi
+    mov rdi, [rsp+16]
+    call get_random_value_by_seed
+    mov [rsp+16], rax
+    ; mov lower 32 bits of rax to rdi and zero extend to 64 bits
     mov rdi, rax
-    call simple_malloc ; rax contains the address of the allocated memory
-    mov [grid], rax ; store the address of the allocated memory in grid
-
-    ; for loop that mallocs memory for each row of the grid
-    xor rdx, rdx ; initialize row index
-
-    _grid_allocator:
-    push rdx ; push row index
-
-    ; allocates grid_size amount of bytes and stores it onto the stack
-    mov rdi, [grid_size] ; grid column count
-    ;shr rdi, 1 ; rdi = rdi / 2 ; mem optimisation
-    call simple_malloc ; rax contains the address of the allocated memory
-    push rax ; temporarily store the address of the allocated memory
-
-    ; compute position in the grid (pointer to the position to be new allocated row stored at)
-    ; saves it in rax
-    mov rax, rdx ; get the pointer offset in the grid (index of the row)
-    mov rcx, x86_64_ptr_byte_size
-    mul rcx ; rax = rax * x86_64_ptr_byte_size
-    add rax, [grid] ; rax = rax + grid (starting address of the grid)
-    pop rcx
-    mov [rax], rcx ; store the address of the allocated memory in grid ; rax = pointer to the data row
-
-    pop rdx ; pop row index
-    inc rdx
-    cmp rdx, qword [grid_size] ; check if row index is less than grid row count
-    jnz _grid_allocator
-
-    ; grid allocation done ---------------------------------------------------------------------------------------------
-    ;
-
-; print row pointers
-;    mov rax, [grid] ; get the address of the grid
-;    mov rcx, 0
-;    _printLoop:
-;        push rcx
-;        push rax
-;        mov rdi, [rax]
-;        call print_num
-;        pop rax
-;        add rax, x86_64_ptr_byte_size
-;        pop rcx
-;        inc rcx
-;        cmp rcx, [grid_size]
-;        jnz _printLoop
-
-; TODO: fill the grid with random values corresponding to the tile types
-; check whether they are valid one by one, if not, generate a new one and repeat this until a valid one is found
-; maybe add the filling to the generation part? Do everything in one loop?
-
-; compute first row
-mov rax, [grid] ; get the address of the grid (pointer to the pointer to first row)
-mov rdi, [rax] ; get the address of the first item in the first row
-mov rsi, [grid_size] ; get the size of the grid
-_gen_first_row:
-    push rsi
-    push rdi
-    call gen_tile
-    push rax ; backup the generated tile VALUE
-    cmp rsi, [grid_size] ; is this first tile in the row?
-    jz _store_tile ; skip left cell check
-
-    ; check if the cell to the left is compatible with the current one, newly generated
-
-    ; store
-    _store_tile:
-    pop rax
-    pop rdi
-    mov [rdi], al ; store the generated tile VALUE
-    add rdi, 1 ; move to the next cell == 1 byte
-    pop rsi
-    dec rsi ; rsi == 0?????
-    jnz _gen_first_row
-
-; TODO: print the grid, create own method of doing so, pain, but lesser pain than learning a graphics library
-; printing could also be added to the one loop cycle, rather not tho
-
-; print 1st row
-mov rax, [grid] ; get the address of the grid (pointer to the pointer to first row)
-mov rdi, [rax] ; get the address of the first item in the first row
-mov rsi, [grid_size] ; get the size of the grid
-_print_first_row:
-    push rsi
-    push rdi
-    movzx rdi, byte [rdi]
     call print_num
 
-    pop rdi
-    inc rdi ; move to the next cell == 1 byte
     pop rsi
-    dec rsi ; rsi == 0?????
-    jnz _print_first_row
-
-call exit
-
-; generates a random tile
-; returns the tile type in 8bit format 0b0000_1010 stores that value in rax in lower 8 bit (al)
-gen_tile:
-    push rbp
-    mov rbp, rsp
-
-    ; generate a random number
-    call get_random_value_by_seed
-
-    ; converts the seed to id of the tile data
-    mov rdi, [seed]
-    mov rsi, tile_data_len
-    shr rsi, 3 ; rsi = rsi / 8 ; rsi = tile_data_len / 8 ; convert pointer len to array len
-    call get_modulus ; compute the id of the tile
-
-    ;----------------- DEBUG -----------------
-;    push rax ; store the id of the tile
-;    movzx rdi, byte al ; rdi = id of the tile
-;    call print_num
-;    pop rax
-    ; ----------------------------------------
-
-    ; get the tile data
-    mov rbx, [tile_data] ; get the address of the first tile
-    mov r10, x86_64_ptr_byte_size
-    mul r10 ; rax = rax * x86_64_ptr_byte_size
-    add rbx, rax ; rbx = rbx + rax ; rbx = address of the tile data ; rbx = pointer to the tile data
-    xor rax, rax
-    mov al, byte [rbx]
-
-;    push rax
-;;--------------- debug printing
-;    movzx rdi, byte al    ; rdi = tile type
-;    call print_num
-;;---------------
-;    pop rax
+    dec rsi
+    jnz _loop
 
 
-
-    leave
-    ret
-
-; directly manipulates with the seed data, internal method...
-get_random_value_by_seed:
-push rbp
-mov rbp, rsp
-
-;
-;	P2|P1|P0 := (S1|S0) * A
-;
-mov	ax, [S0]
-mov	bx, A
-mul	bx
-mov	si, dx ;	si := pp01  (pp = partial product)
-mov	di, ax ;	di := pp00 = P0
-mov	ax, [S1]
-mul	bx ;	ax := pp11
-add	ax, si ;	ax := pp11 + pp01 = P1
-adc	dx, 0 ;	dx := pp12 + carry = P2
-
-;
-;	P2|P1:P0 = p * 2**31 + q, 0 <= q < 2**31
-;
-;	p = P2 SHL 1 + sign bit of P1 --> dx
-;		(P2:P1|P0 < 2**46 so p fits in a single word)
-;	q = (P1 AND 7FFFh)|P0 = (ax AND 7fffh) | di
-;
-shl	ax, 1
-rcl	dx, 1
-shr	ax, 1
-;
-;	dx:ax := p + q
-;
-add	dx, di ;	dx := p0 + q0
-adc	ax, 0 ;	ax := q1 + carry
-xchg ax, dx
-;
-;	if p+q < 2**31 then p+q is the new seed; otherwise whack
-;	  off the sign bit and add 1 and THATs the new seed
-;
-test	dx, 8000h
-jz	Store
-and	dx, 7fffh ;	whack off the sign bit
-add	ax, 1 ;		inc doesn't set carry bit
-adc	dx, 0
-
-Store:
-	mov	[S1], dx
-	mov	[S0], ax
-
-leave
-ret
+    mov rdi, 0
+    call exit
