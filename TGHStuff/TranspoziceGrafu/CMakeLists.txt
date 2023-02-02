@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.23)
+project(TranspoziceGrafu C)
+
+set(CMAKE_C_STANDARD 99)
+
+add_executable(TranspoziceGrafu main.c matrix_tools/loadMatrix_FromInput.c matrix_tools/transposeMatrix.c matrix_tools/printMatrix_InPlainFormat.c matrix_tools/printMatrix_VertexConnections.c matrix_tools/headerFiles/loadMatrix_FromInput.h matrix_tools/headerFiles/printMatrix_InPlainFormat.h matrix_tools/headerFiles/transposeMatrix.h matrix_tools/headerFiles/printMatrix_VertexConnections.h)
