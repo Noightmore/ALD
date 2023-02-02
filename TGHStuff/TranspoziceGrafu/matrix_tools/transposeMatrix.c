@@ -12,5 +12,7 @@ char** transposeMatrix(char ***matrix, const long *rowSize, const long *colSize)
             *(*(transposedMatrix + i) + j) = (*matrix)[j][i]; // NOLINT(cppcoreguidelines-narrowing-conversions)
         }
     }
+
+    // caller takes the ownership of this memory
     return transposedMatrix;
 }

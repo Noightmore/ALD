@@ -1,0 +1,6 @@
+#ifndef TRANSPOZICEGRAFU_PRINTMATRIX_VERTEXCONNECTIONS_H
+#define TRANSPOZICEGRAFU_PRINTMATRIX_VERTEXCONNECTIONS_H
+
+void printMatrix_VertexConnections(char*** matrix, const long* rowSize, const long* colSize);
+
+#endif //TRANSPOZICEGRAFU_PRINTMATRIX_VERTEXCONNECTIONS_H
