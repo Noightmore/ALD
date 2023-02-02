@@ -55,7 +55,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/rob/Programming/Csharp/ALD/TGHStuff/Solutions/TranspoziceGrafu/cmake-build-debug"
+			"value" : "/home/rob/Programming/Csharp/ALD/TGHStuff/TranspoziceGrafu/cmake-build-debug"
 		},
 		{
 			"name" : "CMAKE_CACHE_MAJOR_VERSION",
@@ -463,7 +463,7 @@
 				}
 			],
 			"type" : "INTERNAL",
-			"value" : "/home/rob/Programming/Csharp/ALD/TGHStuff/Solutions/TranspoziceGrafu"
+			"value" : "/home/rob/Programming/Csharp/ALD/TGHStuff/TranspoziceGrafu"
 		},
 		{
 			"name" : "CMAKE_INSTALL_PREFIX",
@@ -995,7 +995,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/rob/Programming/Csharp/ALD/TGHStuff/Solutions/TranspoziceGrafu/cmake-build-debug"
+			"value" : "/home/rob/Programming/Csharp/ALD/TGHStuff/TranspoziceGrafu/cmake-build-debug"
 		},
 		{
 			"name" : "TranspoziceGrafu_IS_TOP_LEVEL",
@@ -1019,7 +1019,7 @@
 				}
 			],
 			"type" : "STATIC",
-			"value" : "/home/rob/Programming/Csharp/ALD/TGHStuff/Solutions/TranspoziceGrafu"
+			"value" : "/home/rob/Programming/Csharp/ALD/TGHStuff/TranspoziceGrafu"
 		}
 	],
 	"kind" : "cache",

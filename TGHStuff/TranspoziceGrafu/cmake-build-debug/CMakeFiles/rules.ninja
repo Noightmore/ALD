@@ -42,7 +42,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = /home/rob/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/cmake/linux/bin/cmake --regenerate-during-build -S/home/rob/Programming/Csharp/ALD/TGHStuff/Solutions/TranspoziceGrafu -B/home/rob/Programming/Csharp/ALD/TGHStuff/Solutions/TranspoziceGrafu/cmake-build-debug
+  command = /home/rob/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/222.4345.21/bin/cmake/linux/bin/cmake --regenerate-during-build -S/home/rob/Programming/Csharp/ALD/TGHStuff/TranspoziceGrafu -B/home/rob/Programming/Csharp/ALD/TGHStuff/TranspoziceGrafu/cmake-build-debug
   description = Re-running CMake...
   generator = 1
 
