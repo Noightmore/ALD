@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CMakePresetLoader">{
+  &quot;useNewFormat&quot;: true
+}</component>
+  <component name="CMakeSettings">
+    <configurations>
+      <configuration PROFILE_NAME="Debug" ENABLED="true" CONFIG_NAME="Debug" />
+    </configurations>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="f7cbd630-477b-422c-a863-c5f80e30ae88" name="Changes" comment="oh" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ClangdSettings">
+    <option name="formatViaClangd" value="false" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="RESET_MODE" value="HARD" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectId" id="2IMzkCWNKYwWDKWpjURc7ahzoBv" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.cidr.known.project.marker": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "cf.first.check.clang-format": "false",
+    "cidr.known.project.marker": "true",
+    "last_opened_file_path": "/home/rob/Programming/c/cpluplus/LabyrinthGenerator",
+    "nodejs_package_manager_path": "npm"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ALDCodeCriticStuff/SemestralWork/LabyrinthGenerator" />
+      <recent name="$PROJECT_DIR$/ALDCodeCriticStuff/SemestralWork/view" />
+      <recent name="$PROJECT_DIR$/ALDCodeCriticStuff/SemestralWork/tools" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f7cbd630-477b-422c-a863-c5f80e30ae88" name="Changes" comment="" />
+      <created>1670006380980</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1670006380980</updated>
+      <workItem from="1670006382157" duration="17188000" />
+      <workItem from="1670065350343" duration="13961000" />
+      <workItem from="1670108620627" duration="3516000" />
+      <workItem from="1670150714477" duration="27023000" />
+      <workItem from="1670326324671" duration="2442000" />
+      <workItem from="1670432320425" duration="6609000" />
+      <workItem from="1670448292335" duration="5322000" />
+      <workItem from="1670584449486" duration="702000" />
+      <workItem from="1670965786752" duration="24000" />
+      <workItem from="1671217472399" duration="282000" />
+    </task>
+    <task id="LOCAL-00001" summary="initialise semestral work">
+      <created>1670007584708</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1670007584708</updated>
+    </task>
+    <task id="LOCAL-00002" summary="regex done ;-)">
+      <created>1670007706782</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1670007706782</updated>
+    </task>
+    <task id="LOCAL-00003" summary="how do I newline markdown file">
+      <created>1670007811027</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1670007811027</updated>
+    </task>
+    <task id="LOCAL-00004" summary="bruh">
+      <created>1670014132625</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1670014132625</updated>
+    </task>
+    <task id="LOCAL-00005" summary="added total memory size used guesser">
+      <created>1670021348980</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1670021348980</updated>
+    </task>
+    <task id="LOCAL-00006" summary="added tile data">
+      <created>1670024372811</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1670024372811</updated>
+    </task>
+    <task id="LOCAL-00007" summary="update readme">
+      <created>1670024492262</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1670024492262</updated>
+    </task>
+    <task id="LOCAL-00008" summary="added more tiles :)">
+      <created>1670067689046</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1670067689046</updated>
+    </task>
+    <task id="LOCAL-00009" summary="couple changes">
+      <created>1670069760146</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1670069760146</updated>
+    </task>
+    <task id="LOCAL-00010" summary="working version of the grid mem allocator">
+      <created>1670091365433</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1670091365433</updated>
+    </task>
+    <task id="LOCAL-00011" summary="basic idea of generating tiles">
+      <created>1670111621704</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1670111621704</updated>
+    </task>
+    <task id="LOCAL-00012" summary="bruh wtf">
+      <created>1670190632836</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1670190632836</updated>
+    </task>
+    <task id="LOCAL-00013" summary="working random number generator">
+      <created>1670327497269</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1670327497269</updated>
+    </task>
+    <task id="LOCAL-00014" summary="ok, changed 4bit format to 8bit one">
+      <created>1670329570712</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1670329570712</updated>
+    </task>
+    <task id="LOCAL-00015" summary="idk rly">
+      <created>1670456786848</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1670456786848</updated>
+    </task>
+    <task id="LOCAL-00016" summary="refactoring of the old version: still corrupting the stack edition">
+      <created>1671217508183</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1671217508183</updated>
+    </task>
+    <task id="LOCAL-00017" summary="oh">
+      <created>1671217609141</created>
+      <option name="number" value="00017" />
+      <option name="presentableId" value="LOCAL-00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1671217609141</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="initialise semestral work" />
+    <MESSAGE value="regex done ;-)" />
+    <MESSAGE value="how do I newline markdown file" />
+    <MESSAGE value="bruh" />
+    <MESSAGE value="added total memory size used guesser" />
+    <MESSAGE value="added tile data" />
+    <MESSAGE value="update readme" />
+    <MESSAGE value="added more tiles :)" />
+    <MESSAGE value="couple changes" />
+    <MESSAGE value="working version of the grid mem allocator" />
+    <MESSAGE value="basic idea of generating tiles" />
+    <MESSAGE value="bruh wtf" />
+    <MESSAGE value="working random number generator" />
+    <MESSAGE value="ok, changed 4bit format to 8bit one" />
+    <MESSAGE value="idk rly" />
+    <MESSAGE value="refactoring of the old version: still corrupting the stack edition" />
+    <MESSAGE value="oh" />
+    <option name="LAST_COMMIT_MESSAGE" value="oh" />
+  </component>
+</project>
