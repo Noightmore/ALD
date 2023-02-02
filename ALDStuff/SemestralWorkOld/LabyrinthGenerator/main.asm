@@ -33,18 +33,18 @@ _start:
 
     ; general_functions.parse_uint64(rdi)
     call parse_uint64
-    mov [rsp+8], rax
+    mov [ss:rbp], rax
 
     mov rdi, rsi
     ; general_functions.parse_uint64(rdi)
     call parse_uint64
-    mov [rsp+16], rax
+    mov [ss:rbp-8], rax
 
-    mov rdi, [rsp+8] ; load grid size
+    mov rdi, [ss:rbp] ; load grid size
     ; grid.allocate_grid(rdi)
     ;call allocate_grid ; allocate grid
 
-    mov rdi, [rsp+16] ; load seed
+    mov rdi, [ss:rbp-8] ; load seed
     ; grid.populate_grid(rdi)
    ; call populate_grid_with_tile_ids ; populate grid
 
@@ -52,9 +52,9 @@ _start:
     _loop:
 
     push rsi
-    mov rdi, [rsp+16]
+    mov rdi, [ss:rbp-8]
     call get_random_value_by_seed
-    mov [rsp+16], rax
+    mov [ss:rbp-8], rax
     ; mov lower 32 bits of rax to rdi and zero extend to 64 bits
     mov rdi, rax
     call print_num

@@ -143,17 +143,17 @@ get_random_value_by_seed:
 
     ; allocate space on stack for seed value
     sub rsp, 16
-    mov [rsp+8], qword rdi
+    mov [ss:rbp], qword rdi
 
     ;
     ;	P2|P1|P0 := (S1|S0) * A
     ;
-    mov	eax, dword [rsp+8] ; load low order word of seed
+    mov	eax, dword [ss:rbp-8] ; load low order word of seed
     mov	ebx, 16807 ; ¯\_(ツ)_/¯
     mul	ebx
     mov	esi, edx ;	si := pp01  (pp = partial product)
     mov	edi, eax ;	di := pp00 = P0
-    mov	eax, dword [rsp+4] ; load high order word of seed
+    mov	eax, dword [ss:rbp-4] ; load high order word of seed
     mul	ebx ;	ax := pp11
     add	eax, esi ;	ax := pp11 + pp01 = P1
     adc	edx, 0 ;	dx := pp12 + carry = P2
@@ -186,10 +186,10 @@ get_random_value_by_seed:
 
     Store:
 
-	mov	dword [rsp+4], edx
-	mov	dword [rsp+8], eax
+	mov	dword [ss:rbp-4], edx
+	mov	dword [ss:rbp-8], eax
 
-	mov	rax, qword [rsp+8] ; load new random value into rax
+	mov	rax, qword [ss:rbp-8] ; load new random value into rax
 
     ; free space on stack
     add rsp, 16
