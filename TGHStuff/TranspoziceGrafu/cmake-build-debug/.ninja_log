@@ -1,7 +1,0 @@
-# ninja log v5
-0	15	1675286866963534775	CMakeFiles/TranspoziceGrafu.dir/matrix_tools/transposeMatrix.c.o	be62369575372218
-18	29	1675286866976868109	TranspoziceGrafu	482132da0fa54871
-0	15	1675284179663521619	CMakeFiles/TranspoziceGrafu.dir/matrix_tools/printMatrix_InPlainFormat.c.o	1a58826ecc0aac0f
-0	18	1675286866966868109	CMakeFiles/TranspoziceGrafu.dir/main.c.o	61d8da1a248a7b79
-0	8	1675273096346801705	CMakeFiles/TranspoziceGrafu.dir/matrix_tools/printMatrix_VertixConnections.c.o	82d884086a9ba5e9
-0	21	1675284148843521486	CMakeFiles/TranspoziceGrafu.dir/matrix_tools/loadMatrix_FromInput.c.o	9d227822348b6eb4

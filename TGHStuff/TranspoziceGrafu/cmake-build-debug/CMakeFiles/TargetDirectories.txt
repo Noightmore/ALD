@@ -1,3 +1,0 @@
-/home/rob/Programming/Csharp/ALD/TGHStuff/TranspoziceGrafu/cmake-build-debug/CMakeFiles/TranspoziceGrafu.dir
-/home/rob/Programming/Csharp/ALD/TGHStuff/TranspoziceGrafu/cmake-build-debug/CMakeFiles/edit_cache.dir
-/home/rob/Programming/Csharp/ALD/TGHStuff/TranspoziceGrafu/cmake-build-debug/CMakeFiles/rebuild_cache.dir
