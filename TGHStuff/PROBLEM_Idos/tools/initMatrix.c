@@ -3,7 +3,7 @@
 #include <unistd.h>
 #include "../data/Node.h"
 
-#define nullptr (Node*) 0x00;
+#define NULLPTR (Node*) 0x00;
 
 Node*** initMatrix(const unsigned long* size)
 {
@@ -13,7 +13,7 @@ Node*** initMatrix(const unsigned long* size)
         data[i] = sbrk(sizeof(Node*) * *size);
         for (int j=0; j < *size; j++)
         {
-            data[i][j] = nullptr;
+            data[i][j] = NULLPTR;
         }
     }
 
