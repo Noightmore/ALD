@@ -4,24 +4,32 @@
 #include "../data/IdosData.h"
 #include "../data/Macros.h"
 
+// TODO: refactor this function
 int populateConnectionMatrix(Node*** matrix, const IdosData* idosData)
 {
-    char buffer[256];
+    char buffer[BUFFER_SIZE];
+
+    unsigned long start;
+    unsigned long end;
+    unsigned long start_time;
+    unsigned long time_it_takes;
+
     for(int i = 0; i < *idosData->connectionCount; i++)
     {
-        unsigned long start;
-        unsigned long end;
-        unsigned long start_time;
-        unsigned long time_it_takes;
 
-        fgets(buffer, 256, stdin);
+        // TODO: check if the input is valid
+        fgets(buffer, BUFFER_SIZE, stdin);
         sscanf(buffer, "%lu %lu %lu %lu", &start, &end, &start_time, &time_it_takes); // NOLINT(cert-err34-c)
         printf("start_time: %lu, end: %lu, start_time: %lu, time_it_takes: %lu\n",
                start, end, start_time, time_it_takes);
 
+
+        // TODO: fix sussy bakka code
+        // -------------------------------------------------------------------------------------------------------------
         if(matrix[start][end] == NULLPTR)
         {
             // TODO: make the allocation of node and settings its params a function
+            // also if sbrk fails, we should handle it
             matrix[start][end] = sbrk(sizeof(Node*));
             matrix[start][end]->connection_value = sbrk(sizeof(Connection*));
             matrix[start][end]->connection_value->start_time = sbrk(sizeof(unsigned long));

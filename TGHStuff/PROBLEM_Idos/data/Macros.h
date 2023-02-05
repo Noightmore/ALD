@@ -2,5 +2,6 @@
 #define PROBLEM_IDOS_MACROS_H
 
 #define NULLPTR (Node*) 0x00
+#define BUFFER_SIZE 256
 
 #endif //PROBLEM_IDOS_MACROS_H
