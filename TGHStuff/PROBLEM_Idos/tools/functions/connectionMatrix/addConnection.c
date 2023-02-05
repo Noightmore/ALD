@@ -5,7 +5,7 @@ int addConnection(Node** connectionPosition, const unsigned long* start_time, co
     if(*connectionPosition == NULLPTR)
     {
         *connectionPosition = createNode(start_time, time_it_takes);
-        return 1;
+        return 0; // returns zero if new connection linked list was created
     }
 
     Node *currentNode = *connectionPosition;
@@ -15,5 +15,5 @@ int addConnection(Node** connectionPosition, const unsigned long* start_time, co
     }
 
     currentNode->next_connection = createNode(start_time, time_it_takes);
-    return 0;
+    return 1; // returns one if new connection was added to existing linked list
 }

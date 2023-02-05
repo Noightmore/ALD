@@ -12,13 +12,16 @@ int populateConnectionMatrix(Node*** matrix, const IdosData* idosData)
     for(int i = 0; i < *idosData->connectionCount; i++)
     {
 
-        fgets(buffer, BUFFER_SIZE, stdin);
+        if(fgets(buffer, BUFFER_SIZE, stdin) == NULL)
+        {
+            return 1;
+        }
         sscanf(buffer, "%lu %lu %lu %lu", &start, &end, &start_time, &time_it_takes); // NOLINT(cert-err34-c)
-        printf("start_time: %lu, end: %lu, start_time: %lu, time_it_takes: %lu\n",
-               start, end, start_time, time_it_takes);
+        //printf("\nstart_time: %lu, end: %lu, start_time: %lu, time_it_takes: %lu\n",
+        //       start, end, start_time, time_it_takes);
 
         int result = addConnection(&matrix[start][end], &start_time, &time_it_takes);
-        printf("result: %d \n", result);
+        //printf("result: %d \n", result);
 
     }
 
