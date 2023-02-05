@@ -2,6 +2,7 @@
 #define PROBLEM_IDOS_MATRIXVISUALIZER_H
 
 #include <gtk/gtk.h>
+
 #include "../../../data/LinkedList.h"
 #include "../../../data/IdosData.h"
 
