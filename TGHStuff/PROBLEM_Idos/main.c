@@ -1,7 +1,7 @@
 #include "tools/headers/loadInitialData.h"
-#include "tools/headers/initConnectionMatrix.h"
+#include "tools/headers/connectionMatrix/initConnectionMatrix.h"
 #include "data/LinkedList.h"
-#include "tools/headers/populateConnectionMatrix.h"
+#include "tools/headers/connectionMatrix/populateConnectionMatrix.h"
 
 int main()
 {

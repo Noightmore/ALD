@@ -1,8 +1,14 @@
 #ifndef PROBLEM_IDOS_POPULATECONNECTIONMATRIX_H
 #define PROBLEM_IDOS_POPULATECONNECTIONMATRIX_H
 
-#include "../../data/LinkedList.h"
-#include "../../data/IdosData.h"
+#include <stdio.h>
+#include <malloc.h>
+
+#include "../../../data/LinkedList.h"
+#include "../../../data/IdosData.h"
+#include "../../../data/Macros.h"
+#include "createNode.h"
+#include "addConnection.h"
 
 int populateConnectionMatrix(Node*** matrix, const IdosData* idosData);
 
