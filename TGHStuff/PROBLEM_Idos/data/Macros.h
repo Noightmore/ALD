@@ -1,0 +1,6 @@
+#ifndef PROBLEM_IDOS_MACROS_H
+#define PROBLEM_IDOS_MACROS_H
+
+#define NULLPTR (Node*) 0x00
+
+#endif //PROBLEM_IDOS_MACROS_H
