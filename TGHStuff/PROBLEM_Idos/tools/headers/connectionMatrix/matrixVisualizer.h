@@ -5,6 +5,7 @@
 
 #include "../../../data/LinkedList.h"
 #include "../../../data/IdosData.h"
+#include "../../../data/Macros.h"
 
 int matrixVisualizer(Node*** matrix, const IdosData* idosData);
 
