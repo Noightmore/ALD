@@ -12,6 +12,5 @@ Node* createNode(const unsigned long* start_time, const unsigned long* time_it_t
     *node->connection_value->time_it_takes = *time_it_takes;
     node->next_connection = NULLPTR;
 
-
     return node;
 }

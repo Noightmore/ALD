@@ -7,10 +7,13 @@ int matrixVisualizer(Node*** matrix, const IdosData* idosData)
     // in this format:
     // (1st index of the matrix) - (2nd index of the matrix) - (start_time) - (time_it_takes)
     //
-    for (int i = 0; i < *idosData->stationCount; ++i) {
-        for (int j = 0; j < *idosData->stationCount; ++j) {
+    for (int i = 0; i < *idosData->stationCount; ++i)
+    {
+        for (int j = 0; j < *idosData->stationCount; ++j)
+        {
             Node* node = matrix[i][j];
-            while (node != NULLPTR) {
+            while (node != NULLPTR)
+            {
                 printf("%d -> %d - %lu - %lu\n",
                        i, j,
                        *node->connection_value->start_time,

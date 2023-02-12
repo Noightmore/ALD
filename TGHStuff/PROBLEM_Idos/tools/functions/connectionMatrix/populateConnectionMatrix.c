@@ -9,9 +9,10 @@ int populateConnectionMatrix(Node*** matrix, const IdosData* idosData)
     unsigned long start_time;
     unsigned long time_it_takes;
 
+    int result = 1; // default value - something failed
+
     for(int i = 0; i < *idosData->connectionCount; i++)
     {
-
         if(fgets(buffer, BUFFER_SIZE, stdin) == NULL)
         {
             return 1;
@@ -20,10 +21,13 @@ int populateConnectionMatrix(Node*** matrix, const IdosData* idosData)
         //printf("\nstart_time: %lu, end: %lu, start_time: %lu, time_it_takes: %lu\n",
         //       start, end, start_time, time_it_takes);
 
-        int result = addConnection(&matrix[start][end], &start_time, &time_it_takes);
+        result = addConnection(&matrix[start][end], &start_time, &time_it_takes);
         //printf("result: %d \n", result);
-
+        if(result != 0)
+        {
+            return result;
+        }
     }
 
-    return 0;
+    return result;
 }
