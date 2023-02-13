@@ -6,6 +6,7 @@
 #include "../../data/IdosData.h"
 #include "../../data/LinkedList.h"
 #include "../../data/Macros.h"
+#include "dijkstraSolver/findShortestPath.h"
 
 int processInputLine(const Node*** matrix, const IdosData* idosData);
 

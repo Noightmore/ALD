@@ -1,5 +1,4 @@
 #include "../headers/processInputLine.h"
-#include "../headers/dijkstraSolver/findShortestPath.h"
 
 int processInputLine(const Node*** matrix, const IdosData* idosData)
 {
@@ -17,8 +16,9 @@ int processInputLine(const Node*** matrix, const IdosData* idosData)
 
     //printf("%d %d %d", input[0], input[1], input[2]);
     int result = findShortestPath(matrix, idosData, input);
+
     // TODO: check result, rework this
-    if(result == NULL)
+    if(result == (int) NULL)
     {
         return 1;
     }
